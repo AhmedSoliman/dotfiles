@@ -1,0 +1,7 @@
+tmux
+luajit
+vim --with-python --with-luajit
+socat
+python
+git
+libgit2

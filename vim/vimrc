@@ -1,0 +1,97 @@
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+source ~/.vim/plugins.vim
+call vundle#end()            " required
+filetype plugin indent on    " required
+
+" Enabled Powerline Status
+python from powerline.vim import setup as powerline_setup
+python powerline_setup()
+python del powerline_setup
+
+" General Settings
+syntax on
+set nu incsearch
+set backspace=indent,eol,start
+set encoding=utf8
+set tm=500
+set cmdheight=1
+set title
+set ruler
+set showbreak=… " show ellipsis at breaking
+set linebreak
+set smartindent
+set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set laststatus=2 " Show Vim Status Line All The Time
+let c_space_errors=1
+match ErrorMsg /\s\+$\| \+\ze\t/
+
+set ruler
+set showmatch
+set tags=tags;/
+set undolevels=1000
+set modelines=0
+
+" My Style
+set expandtab
+set shiftwidth=2
+set tabstop=2
+set softtabstop=2
+
+" Disable Arrow Keys
+noremap <Up> <NOP>
+noremap <Down> <NOP>
+noremap <Left> <NOP>
+noremap <Right> <NOP>
+
+" 80 characters
+set list
+set list listchars=tab:»·,trail:·,nbsp:·
+set textwidth=80
+set colorcolumn=+1
+set number
+set relativenumber
+set numberwidth=5
+
+" Better j, k
+nnoremap j gj
+nnoremap k gk
+
+" Leader is Space
+let mapleader = " "
+
+" Use Tab to navigate Blocks
+nnoremap <tab> %
+vnoremap <tab> %
+
+" map leader + s to save
+nnoremap <leader>s :w<cr>
+
+" quickly close window
+nnoremap <leader>x :x<cr>
+nnoremap <leader>X :q!<cr>
+
+" Better indentation in Visual Mode
+vnoremap < <gv
+vnoremap > >gv
+
+" Disable Ex Mode
+noremap Q <NOP>
+
+"Split more natural direction
+set splitbelow
+set splitright
+
+" NERDTree Shortcuts
+map <C-n> :NERDTreeToggle<cr>
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+

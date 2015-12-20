@@ -1,0 +1,8 @@
+cffi
+mercurial
+pygit2
+bzr
+pyuv
+i3-py
+psutil
+powerline-status
