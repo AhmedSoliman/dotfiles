@@ -5,3 +5,5 @@ socat
 python
 git
 libgit2
+libtool
+automake

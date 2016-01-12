@@ -6,3 +6,5 @@ pyuv
 i3-py
 psutil
 powerline-status
+virtualenvwrapper
+ipython
