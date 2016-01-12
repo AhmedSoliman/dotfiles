@@ -16,3 +16,19 @@ Bundle 'chrisbra/Colorizer.git'
 
 " Syntax Checking
 Plugin 'scrooloose/syntastic'
+
+" Auto Completion
+Bundle "Valloric/YouCompleteMe"
+
+" Scala
+Plugin 'derekwyatt/vim-scala'
+Plugin 'ensime/ensime-vim'
+
+" C++
+Plugin 'octol/vim-cpp-enhanced-highlight'
+
+" Rust
+Plugin 'rust-lang/rust.vim'
+
+" TagsList
+Bundle 'taglist.vim'

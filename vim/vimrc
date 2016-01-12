@@ -95,3 +95,26 @@ autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
+" CtrlP Configuration
+set wildignore+=*/target/*
+
+" Ensime Configuration
+let EnErrorStyle='Underline'
+
+nnoremap  <leader>t :EnType<cr>
+nnoremap <leader>o :EnDeclaration<cr>
+autocmd CursorHold * call Timer()
+function! Timer()
+  call feedkeys("f\e")
+  " K_IGNORE keycode does not work after version 7.2.025)
+  " there are numerous other keysequences that you can use
+endfunction
+
+" C++ 
+let g:cpp_class_scope_highlight = 1
+
+" Rust Auto Formatting
+" let g:rustfmt_autosave = 1
+" TagList
+"
+nmap <C-m> :TlistToggle<cr>
