@@ -11,9 +11,13 @@ call vundle#end()            " required
 filetype plugin indent on    " required
 
 " Enabled Powerline Status
-python from powerline.vim import setup as powerline_setup
-python powerline_setup()
-python del powerline_setup
+" python from powerline.vim import setup as powerline_setup
+" python powerline_setup()
+" python del powerline_setup
+
+execute pathogen#infect()
+
+let g:airline#extensions#tabline#enabled = 1
 
 " General Settings
 syntax on
@@ -118,3 +122,22 @@ let g:cpp_class_scope_highlight = 1
 " TagList
 "
 nmap <C-m> :TlistToggle<cr>
+
+
+" Haskell Stuff
+let g:haddock_docdir="/usr/local/share/doc/ghc/html/"
+let g:haddock_browser="/Applications/Safari.app/Contents/MacOS/Safari"
+au BufEnter *.hs compiler ghc
+let g:ycm_semantic_triggers = {'haskell' : ['.']}
+
+" Syntastic Config
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+au BufEnter *.scala setl formatprg=java\ -jar\ /usr/local/Cellar/scalariform/0.1.6/libexec/scalariform.jar\ -f\ -q\ +compactControlReadability\ +alignParameters\ +alignSingleLineCaseStatements\ +doubleIndentClassDeclaration\ +preserveDanglingCloseParenthesis\ +rewriteArrowSymbols\ +preserveSpaceBeforeArguments\ --stdin\ --stdout

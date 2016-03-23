@@ -5,6 +5,9 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 " Appearance
 
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+
 Bundle 'skwp/vim-colors-solarized'
 Bundle 'chriskempson/base16-vim'
 
@@ -22,7 +25,6 @@ Bundle "Valloric/YouCompleteMe"
 
 " Scala
 Plugin 'derekwyatt/vim-scala'
-Plugin 'ensime/ensime-vim'
 
 " C++
 Plugin 'octol/vim-cpp-enhanced-highlight'
@@ -31,4 +33,10 @@ Plugin 'octol/vim-cpp-enhanced-highlight'
 Plugin 'rust-lang/rust.vim'
 
 " TagsList
-Bundle 'taglist.vim'
+" Bundle 'taglist.vim'
+Bundle 'majutsushi/tagbar'
+
+" Haskell Plugins
+Plugin 'lukerandall/haskellmode-vim'
+Plugin 'eagletmt/neco-ghc'
+
