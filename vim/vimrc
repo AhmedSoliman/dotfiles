@@ -10,17 +10,14 @@ source ~/.vim/plugins.vim
 call vundle#end()            " required
 filetype plugin indent on    " required
 
-" Enabled Powerline Status
-" python from powerline.vim import setup as powerline_setup
-" python powerline_setup()
-" python del powerline_setup
-
-execute pathogen#infect()
-
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#fnamemod = ':t'
 
 " General Settings
 syntax on
+" Leader is Space
+let mapleader = ' '
+let maplocalleader = '\'
 set nu incsearch
 set backspace=indent,eol,start
 set encoding=utf8
@@ -31,6 +28,10 @@ set ruler
 set showbreak=… " show ellipsis at breaking
 set linebreak
 set smartindent
+set hlsearch
+set ignorecase
+set smartcase
+set visualbell
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set laststatus=2 " Show Vim Status Line All The Time
@@ -68,8 +69,6 @@ set numberwidth=5
 nnoremap j gj
 nnoremap k gk
 
-" Leader is Space
-let mapleader = " "
 
 " Use Tab to navigate Blocks
 nnoremap <tab> %
@@ -77,6 +76,9 @@ vnoremap <tab> %
 
 " map leader + s to save
 nnoremap <leader>s :w<cr>
+
+" Switch between header and cpp files
+nmap <leader>h :A<CR>
 
 " quickly close window
 nnoremap <leader>x :x<cr>
@@ -102,34 +104,27 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 " CtrlP Configuration
 set wildignore+=*/target/*
 
-" Ensime Configuration
-let EnErrorStyle='Underline'
-
-nnoremap  <leader>t :EnType<cr>
-nnoremap <leader>o :EnDeclaration<cr>
-autocmd CursorHold * call Timer()
-function! Timer()
-  call feedkeys("f\e")
-  " K_IGNORE keycode does not work after version 7.2.025)
-  " there are numerous other keysequences that you can use
-endfunction
+let g:ctrlp_working_path_mode = 'a'
+let g:ctrlp_extensions = ['autoignore']
+let g:ctrlp_cmd = 'CtrlPMixed'
 
 " C++ 
 let g:cpp_class_scope_highlight = 1
 
-" Rust Auto Formatting
-" let g:rustfmt_autosave = 1
+" Formatting
+noremap <C-F> :Autoformat<CR>
+
 " TagList
-"
-nmap <C-m> :TlistToggle<cr>
+nmap <C-m> :TagBar<cr>
 
+" Python Config
+let g:flake8_cmd='/usr/local/bin/flake8'
 
-" Haskell Stuff
-let g:haddock_docdir="/usr/local/share/doc/ghc/html/"
-let g:haddock_browser="/Applications/Safari.app/Contents/MacOS/Safari"
-au BufEnter *.hs compiler ghc
-let g:ycm_semantic_triggers = {'haskell' : ['.']}
+set t_Co=256
+set background=dark
+colorscheme elflord
 
+let g:ycm_confirm_extra_conf = 0
 " Syntastic Config
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
@@ -140,4 +135,29 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
-au BufEnter *.scala setl formatprg=java\ -jar\ /usr/local/Cellar/scalariform/0.1.6/libexec/scalariform.jar\ -f\ -q\ +compactControlReadability\ +alignParameters\ +alignSingleLineCaseStatements\ +doubleIndentClassDeclaration\ +preserveDanglingCloseParenthesis\ +rewriteArrowSymbols\ +preserveSpaceBeforeArguments\ --stdin\ --stdout
+" YCM Config
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_min_num_identifier_candidate_chars = 4
+let g:ycm_min_num_of_chars_for_completion = 4
+let g:ycm_enable_diagnostic_signs = 0
+let g:ycm_complete_in_comments = 0
+let g:ycm_confirm_extra_conf = 0
+let g:ycm_error_symbol = 'x'
+let g:ycm_warning_symbol = '!'
+let g:ycm_server_keep_logfiles = 1
+
+nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
+nnoremap <leader>t :YcmCompleter GetType<CR>
+
+" UltiSnips Config
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:ycm_key_list_previous_completion=['<Up>']
+let g:UltiSnipsExpandTrigger="<c-j>"
+let g:UltiSnipsListSnippets="<c-s-tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+let g:ycm_use_ultisnips_completer = 1
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
