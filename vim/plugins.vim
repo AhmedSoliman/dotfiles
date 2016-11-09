@@ -1,12 +1,27 @@
-Plugin 'tpope/vim-fugitive'
-Plugin 'L9'
-Plugin 'https://github.com/ctrlpvim/ctrlp.vim.git'
+" File Navigation
 Plugin 'scrooloose/nerdtree'
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'tpope/vim-fugitive'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
-" Appearance
+Plugin 'a.vim'
 
+" Formatting
+Plugin 'Chiel92/vim-autoformat'
+
+" Comments
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'tpope/vim-surround'
+Plugin 'jiangmiao/auto-pairs'
+
+
+" Snippets
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
+
+" Appearance
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
+Plugin 'edkolev/tmuxline.vim'
 
 Bundle 'skwp/vim-colors-solarized'
 Bundle 'chriskempson/base16-vim'
@@ -23,20 +38,11 @@ Plugin 'scrooloose/syntastic'
 " Auto Completion
 Bundle "Valloric/YouCompleteMe"
 
-" Scala
-Plugin 'derekwyatt/vim-scala'
-
 " C++
 Plugin 'octol/vim-cpp-enhanced-highlight'
-
-" Rust
-Plugin 'rust-lang/rust.vim'
 
 " TagsList
 " Bundle 'taglist.vim'
 Bundle 'majutsushi/tagbar'
 
-" Haskell Plugins
-Plugin 'lukerandall/haskellmode-vim'
-Plugin 'eagletmt/neco-ghc'
 

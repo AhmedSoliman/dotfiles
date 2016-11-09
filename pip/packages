@@ -8,3 +8,4 @@ psutil
 powerline-status
 virtualenvwrapper
 ipython
+yapf
