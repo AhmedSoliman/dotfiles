@@ -3,7 +3,7 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
-Plugin 'a.vim'
+Plugin 'derekwyatt/vim-fswitch'
 
 " Formatting
 Plugin 'Chiel92/vim-autoformat'
