@@ -27,7 +27,7 @@ set title
 set ruler
 set showbreak=… " show ellipsis at breaking
 set linebreak
-set smartindent
+set cindent
 set hlsearch
 set ignorecase
 set smartcase
@@ -74,14 +74,14 @@ nnoremap j gj
 nnoremap k gk
 
 " map leader + s to save
-nnoremap <leader>s :w<cr>
+nmap <leader>s :w<cr>
 
 " Switch between header and cpp files
 " nmap <leader>h :A<CR>
 
 " quickly close window
-nnoremap <leader>x :x<cr>
-nnoremap <leader>X :q!<cr>
+nmap <leader>x :x<cr>
+nmap <leader>X :q!<cr>
 
 " Better indentation in Visual Mode
 vnoremap < <gv
@@ -175,7 +175,7 @@ function! DelTagOfFile(file)
   let cwd = getcwd()
   let tagfilename = cwd . "/tags"
   let f = substitute(fullpath, cwd . "/", "", "")
-  let f = escape(f, "./")
+  let f = escape(f, './')
   let cmd = 'sed -i "/' . f . '/d" "' . tagfilename . '"'
   let resp = system(cmd)
 endfunction
@@ -189,7 +189,6 @@ function! UpdateTags()
   let resp = system(cmd)
 endfunction
 autocmd BufWritePost *.cpp,*.h,*.c call UpdateTags()
-
 
 " UltiSnips Config
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
