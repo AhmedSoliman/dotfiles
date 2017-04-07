@@ -2,8 +2,8 @@
 Plugin 'scrooloose/nerdtree'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'tpope/vim-fugitive'
-Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'derekwyatt/vim-fswitch'
+Plugin 'vim-scripts/swap-parameters'
 
 " Formatting
 Plugin 'Chiel92/vim-autoformat'
