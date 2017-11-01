@@ -123,7 +123,7 @@ let g:syntastic_python_pylint_post_args = '--msg-template="{path}:{line}:{column
 let g:syntastic_mode_map = {'passive_filetypes': ["java", "cpp", "php"]}
 
 set t_Co=256
-set background=dark
+set background=light
 colorscheme solarized
 
 " Make a visual difference between active pane and the others
@@ -132,7 +132,7 @@ augroup CursorLine
   au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
   au WinLeave * setlocal nocursorline
 augroup END
-:hi CursorLine cterm=NONE ctermbg=black guibg=darkred
+" :hi CursorLine cterm=NONE ctermbg=black guibg=darkred
 
 " Active Window
 augroup BgHighlight
@@ -208,3 +208,24 @@ let g:AutoPairsMapSpace=0
 autocmd BufWritePre *.c :%s/\s\+$//e
 autocmd BufWritePre *.cpp :%s/\s\+$//e
 autocmd BufWritePre *.py :%s/\s\+$//e
+
+" C++ Moving between headers and Cpp files
+" Read: Open file
+nmap <silent> <Leader>of :FSHere<cr>
+" Read Open Left (split)
+nmap <silent> <Leader>oh :FSSplitLeft<cr>
+
+" Read Open Right (split)
+nmap <silent> <Leader>ol :FSSplitRight<cr>
+
+" Read Open Above (split)
+nmap <silent> <Leader>ok :FSSplitAbove<cr>
+
+" Read Open Below (split)
+nmap <silent> <Leader>oj :FSSplitBelow<cr>
+
+" Same mappings but without splitting
+nmap <silent> <Leader>oH :FSLeft<cr>
+nmap <silent> <Leader>oL :FSRight<cr>
+nmap <silent> <Leader>oK :FSAbove<cr>
+nmap <silent> <Leader>oJ :FSBelow<cr>
