@@ -132,7 +132,7 @@ augroup CursorLine
   au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
   au WinLeave * setlocal nocursorline
 augroup END
-" :hi CursorLine cterm=NONE ctermbg=black guibg=darkred
+:hi CursorLine cterm=NONE ctermbg=black guibg=darkred
 
 " Active Window
 augroup BgHighlight

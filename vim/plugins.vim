@@ -21,10 +21,10 @@ Plugin 'honza/vim-snippets'
 " Appearance
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-Plugin 'edkolev/tmuxline.vim'
+Plugin 'nightsense/simplifysimplify'
 
 Bundle 'skwp/vim-colors-solarized'
-Bundle 'chriskempson/base16-vim'
+" Bundle 'chriskempson/base16-vim'
 
 " Tmux Integration
 Plugin 'christoomey/vim-tmux-navigator'
@@ -45,4 +45,5 @@ Plugin 'octol/vim-cpp-enhanced-highlight'
 " Bundle 'taglist.vim'
 Bundle 'majutsushi/tagbar'
 
-
+" Thrift
+Bundle 'solarnz/thrift.vim'
