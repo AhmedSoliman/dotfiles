@@ -35,6 +35,7 @@ set visualbell
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set laststatus=2 " Show Vim Status Line All The Time
+set mouse=a
 let c_space_errors=1
 match ErrorMsg /\s\+$\| \+\ze\t/
 
@@ -122,9 +123,7 @@ autocmd Filetype python setlocal expandtab tabstop=4 shiftwidth=4
 let g:syntastic_python_pylint_post_args = '--msg-template="{path}:{line}:{column}:{C}: [{symbol} {msg_id} {msg}]"'
 let g:syntastic_mode_map = {'passive_filetypes': ["java", "cpp", "php"]}
 
-set t_Co=256
-set background=light
-colorscheme solarized
+colorscheme zellner
 
 " Make a visual difference between active pane and the others
 augroup CursorLine
@@ -229,3 +228,4 @@ nmap <silent> <Leader>oH :FSLeft<cr>
 nmap <silent> <Leader>oL :FSRight<cr>
 nmap <silent> <Leader>oK :FSAbove<cr>
 nmap <silent> <Leader>oJ :FSBelow<cr>
+
