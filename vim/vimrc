@@ -108,7 +108,7 @@ let g:ctrlp_working_path_mode = 'a'
 let g:ctrlp_extensions = ['autoignore', 'tag']
 let g:ctrlp_cmd = 'CtrlP'
 
-" C++ 
+" C++
 let g:cpp_class_scope_highlight = 1
 
 " Formatting
@@ -121,9 +121,27 @@ nmap <F5> :TagbarToggle<cr>
 let g:flake8_cmd='/usr/local/bin/flake8'
 autocmd Filetype python setlocal expandtab tabstop=4 shiftwidth=4
 let g:syntastic_python_pylint_post_args = '--msg-template="{path}:{line}:{column}:{C}: [{symbol} {msg_id} {msg}]"'
+let g:syntastic_python_python_exec = '/usr/local/bin/python3'
 let g:syntastic_mode_map = {'passive_filetypes': ["java", "cpp", "php"]}
+" Point YCM to the Pipenv created virtualenv, if possible
+" At first, get the output of 'pipenv --venv' command.
+let pipenv_venv_path = system('pipenv --venv')
+" The above system() call produces a non zero exit code whenever
+" a proper virtual environment has not been found.
+" So, second, we only point YCM to the virtual environment when
+" the call to 'pipenv --venv' was successful.
+" Remember, that 'pipenv --venv' only points to the root directory
+" of the virtual environment, so we have to append a full path to
+" the python executable.
+if shell_error == 0
+  let venv_path = substitute(pipenv_venv_path, '\n', '', '')
+  let g:ycm_python_binary_path = venv_path . '/bin/python'
+else
+  let g:ycm_python_binary_path = 'python'
+endif
 
-colorscheme zellner
+set background=dark
+colorscheme PaperColor
 
 " Make a visual difference between active pane and the others
 augroup CursorLine
@@ -131,7 +149,7 @@ augroup CursorLine
   au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
   au WinLeave * setlocal nocursorline
 augroup END
-:hi CursorLine cterm=NONE ctermbg=black guibg=darkred
+:hi CursorLine cterm=NONE guibg=darkred
 
 " Active Window
 augroup BgHighlight

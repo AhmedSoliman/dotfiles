@@ -7,6 +7,7 @@ Plugin 'derekwyatt/vim-fswitch'
 
 " Formatting
 Plugin 'Chiel92/vim-autoformat'
+Plugin 'ambv/black'
 
 " Comments
 Plugin 'scrooloose/nerdcommenter'
@@ -21,6 +22,7 @@ Plugin 'honza/vim-snippets'
 " Appearance
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
+Plugin 'NLKNguyen/papercolor-theme'
 
 " Tmux Integration
 Plugin 'christoomey/vim-tmux-navigator'
@@ -28,8 +30,11 @@ Plugin 'christoomey/vim-tmux-navigator'
 " HTML
 Bundle 'chrisbra/Colorizer.git'
 
-" Syntax Checking
+" Python
 Plugin 'scrooloose/syntastic'
+Plugin 'nvie/vim-flake8'
+Plugin 'kh3phr3n/python-syntax'
+
 
 " Auto Completion
 Bundle "Valloric/YouCompleteMe"
@@ -46,3 +51,6 @@ Bundle 'solarnz/thrift.vim'
 
 " Rust
 Bundle "rust-lang/rust.vim"
+
+" Search
+Bundle "jremmen/vim-ripgrep"
