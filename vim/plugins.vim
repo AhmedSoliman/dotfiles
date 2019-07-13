@@ -1,3 +1,6 @@
+" Colors
+Plugin 'chriskempson/base16-vim'
+
 " File Navigation
 Plugin 'scrooloose/nerdtree'
 Plugin 'ctrlpvim/ctrlp.vim'
