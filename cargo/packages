@@ -1,3 +1,6 @@
 exa
 fd-find
 ripgrep
+cargo-edit
+cargo-tree
+cargo-outdated
