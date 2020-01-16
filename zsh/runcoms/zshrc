@@ -1,0 +1,24 @@
+#
+# Executes commands at the start of an interactive session.
+#
+# Authors:
+#   Sorin Ionescu <sorin.ionescu@gmail.com>
+#
+
+# Source Prezto.
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+fi
+
+# Customize to your needs...
+fpath=(~/.zfunc $fpath)
+fpath=(/usr/local/share/zsh-completions $fpath)
+
+source "$HOME/.config/base16-shell/base16-shell.plugin.zsh"
+
+# No lag after we hit esc
+export KEYTIMEOUT=1
+bindkey '^r' history-incremental-search-backward
+# ctrl-w removed word backwards
+bindkey '^w' backward-kill-word
+
