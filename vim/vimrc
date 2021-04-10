@@ -18,7 +18,7 @@ let g:airline#extensions#ale#enabled = 1
 " General Settings
 syntax on
 " Leader is Space
-let mapleader = ' '
+let mapleader = '\<Space>'
 let maplocalleader = '\'
 set nu incsearch
 set backspace=indent,eol,start
@@ -107,8 +107,8 @@ vnoremap > >gv
 noremap Q <NOP>
 
 "Split more natural direction
-set splitbelow
 set splitright
+set splitbelow
 
 " NERDTree Shortcuts
 map <C-n> :NERDTreeToggle<cr>
@@ -173,53 +173,18 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
-" NCM2 Completion
-autocmd BufEnter * call ncm2#enable_for_buffer()
-set shortmess+=c
-set completeopt=noinsert,menuone,noselect
-let ncm2#popup_delay = 5
-" "let ncm2#complete_length = [[1,1]]
-let g:ncm2#matcher = 'substrfuzzy'
-" Use <TAB> to select the popup menu:
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
 " Language Server"
-let g:LanguageClient_autoStart = 1
-
-let g:LanguageClient_serverCommands = {
-  \ 'rust': ['rustup', 'run', 'nightly', 'rls']
-  \ }
+let g:ycm_language_server =
+\ [
+\   {
+\     'name': 'rust',
+\     'cmdline': ['rust-analyzer'],
+\     'filetypes': ['rust'],
+\     'project_root_files': ['Cargo.toml']
+\   }
+\ ]
 
 au Filetype rust set colorcolumn=100
-" Linter
-" only lint on save
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_insert_leave = 1
-let g:ale_lint_on_save = 0
-let g:ale_lint_on_enter = 0
-let g:ale_virtualtext_cursor = 1
-let g:ale_rust_rls_config = {
-	\ 'rust': {
-		\ 'all_targets': 1,
-		\ 'build_on_save': 1,
-		\ 'clippy_preference': 'on'
-	\ }
-	\ }
-let g:ale_rust_rls_toolchain = ''
-let g:ale_linters = {'rust': ['rls']}
-highlight link ALEWarningSign Todo
-highlight link ALEErrorSign WarningMsg
-highlight link ALEVirtualTextWarning Todo
-highlight link ALEVirtualTextInfo Todo
-highlight link ALEVirtualTextError WarningMsg
-highlight ALEError guibg=NONE
-highlight ALEWarning guibg=NONE
-let g:ale_sign_error = "✖"
-let g:ale_sign_warning = "⚠"
-let g:ale_sign_info = "i"
-let g:ale_sign_hint = "➤"
-" "
 " YCM Config
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_min_num_identifier_candidate_chars = 4
@@ -231,10 +196,8 @@ let g:ycm_error_symbol = 'x'
 let g:ycm_warning_symbol = '!'
 let g:ycm_server_keep_logfiles = 1
 
-""nnoremap <leader>pg :YcmCompleter GoToDefinitionElseDeclaration<CR>
-nnoremap <leader>pd :ALEGoToDefinition<CR>
-""nnoremap <leader>pc :YcmCompleter GoToDeclaration<CR>
-nnoremap <leader>t :ALEHover<CR>
+nnoremap <leader>pg :YcmCompleter GoToDefinitionElseDeclaration<CR>
+nnoremap <leader>pc :YcmCompleter GoToDeclaration<CR>
 
 " cctags
 " cctags auto updating
