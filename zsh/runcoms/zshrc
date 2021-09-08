@@ -22,3 +22,4 @@ bindkey '^r' history-incremental-search-backward
 # ctrl-w removed word backwards
 bindkey '^w' backward-kill-word
 
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

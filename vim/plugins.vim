@@ -39,20 +39,20 @@ Plugin 'nvie/vim-flake8'
 Plugin 'kh3phr3n/python-syntax'
 
 " Language Client
-Plugin  'autozimu/LanguageClient-neovim', {'branch': 'next', 'do': 'bash install.sh'}
+" Plugin  'autozimu/LanguageClient-neovim', {'branch': 'next', 'do': 'bash install.sh'}
 
 " ALE
-Plugin 'w0rp/ale'
+" Plugin 'w0rp/ale'
 
 " Auto Completion
-" Bundle "Valloric/YouCompleteMe"
-Plugin 'prabirshrestha/async.vim'
-Plugin 'ncm2/ncm2'
-Plugin 'roxma/vim-hug-neovim-rpc'
-Plugin 'roxma/nvim-yarp'
-Plugin 'ncm2/ncm2-bufword'
-Plugin 'ncm2/ncm2-tmux'
-Plugin 'ncm2/ncm2-path'
+Bundle "Valloric/YouCompleteMe"
+" Plugin 'prabirshrestha/async.vim'
+" Plugin 'ncm2/ncm2'
+" Plugin 'roxma/vim-hug-neovim-rpc'
+" Plugin 'roxma/nvim-yarp'
+" Plugin 'ncm2/ncm2-bufword'
+" Plugin 'ncm2/ncm2-tmux'
+" Plugin 'ncm2/ncm2-path'
 
 " C++
 Plugin 'octol/vim-cpp-enhanced-highlight'
