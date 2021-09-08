@@ -66,6 +66,7 @@ fi
 
 export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
 
+alias vim="nvim"
 alias rg="rg --iglob='!tags'"
 alias ls='exa'
 alias ll='exa -l'

@@ -330,3 +330,9 @@ nmap <silent> <Leader>oL :FSRight<cr>
 nmap <silent> <Leader>oK :FSAbove<cr>
 nmap <silent> <Leader>oJ :FSBelow<cr>
 
+" FB Specific
+augroup configerator
+  au!
+  autocmd BufNewFile, BufRead *.cinc set syntax=python
+  autocmd BufNewFile, BufRead *.cconf set syntax=python
+augroup END
