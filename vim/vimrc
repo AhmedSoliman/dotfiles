@@ -133,7 +133,9 @@ noremap <C-F> :Autoformat<CR>
 nmap <F5> :TagbarToggle<cr>
 
 " Python Config
-let g:flake8_cmd='/usr/local/bin/flake8'
+let g:flake8_cmd='/usr/local/bin/flake8-3'
+let g:syntastic_python_pyflakes_exe = '/usr/local/fbcode/gcc-5-glibc-2.23/bin/python3.6 -m pyflakes'
+let g:syntastic_python_checkers = ['flake8']
 autocmd Filetype python setlocal expandtab tabstop=4 shiftwidth=4
 let g:syntastic_python_pylint_post_args = '--msg-template="{path}:{line}:{column}:{C}: [{symbol} {msg_id} {msg}]"'
 let g:syntastic_python_python_exec = '/usr/local/bin/python3'
@@ -261,3 +263,7 @@ nmap <silent> <Leader>oL :FSRight<cr>
 nmap <silent> <Leader>oK :FSAbove<cr>
 nmap <silent> <Leader>oJ :FSBelow<cr>
 
+" YCM must use the same Python version it's linked against
+let g:ycm_path_to_python_interpreter = '/data/users/asoli/fbsource/fbcode/third-party-buck/gcc-5-glibc-2.23/build/python/2.7/bin/python2.7'
+" Default ycm_extra_conf.py for fbcode
+let g:ycm_global_ycm_extra_conf = '/home/asoli/.vim/bundle/YouCompleteMe/ycm_extra_conf_fbcode.py'
