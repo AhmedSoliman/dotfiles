@@ -4,3 +4,4 @@ ripgrep
 cargo-edit
 cargo-tree
 cargo-outdated
+proximity-sort

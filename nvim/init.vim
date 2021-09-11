@@ -154,9 +154,7 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " Formatting
-noremap <C-F> :Autoformat<CR>
-" Formatting
-noremap <C-F> :Autoformat<CR>
+noremap <C-F> :Neoformat<CR>
 " <leader>s for Rg search
 noremap <leader>s :Rg
 let g:fzf_layout = { 'down': '~30%' }
@@ -170,6 +168,7 @@ command! -bang -nargs=* Rg
 function! s:list_cmd()
   let base = fnamemodify(expand('%'), ':h:.:S')
   return base == '.' ? 'fd --type file --follow' : printf('fd --type file --follow | proximity-sort %s', shellescape(expand('%')))
+  " return 'fd --type file --follow' 
 endfunction
 
 command! -bang -nargs=? -complete=dir Files
@@ -331,8 +330,10 @@ nmap <silent> <Leader>oK :FSAbove<cr>
 nmap <silent> <Leader>oJ :FSBelow<cr>
 
 " FB Specific
-augroup configerator
-  au!
-  autocmd BufNewFile, BufRead *.cinc set syntax=python
-  autocmd BufNewFile, BufRead *.cconf set syntax=python
-augroup END
+autocmd BufRead *.cinc set filetype=python
+autocmd BufRead *.cconf set filetype=python
+autocmd BufRead TARGETS set filetype=python
+autocmd Filetype markdown setlocal spell tw=72 colorcolumn=73
+
+" Where is python
+let g:python3_host_prog =  "/home/asoli/fbcode/third-party-buck/platform009/build/python/3.8/bin/python3"

@@ -15,13 +15,16 @@ Plug 'chriskempson/base16-vim'
 
 " General code improvement
 Plug 'scrooloose/nerdcommenter'
-Plug 'Chiel92/vim-autoformat'
+Plug 'sbdchd/neoformat'
 
 " Semantic language support
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Tmux Integration
 Plug 'christoomey/vim-tmux-navigator'
+
+" C/C++ Related
+Plug 'derekwyatt/vim-fswitch'
 
 " Syntactic language support
 Plug 'cespare/vim-toml'
