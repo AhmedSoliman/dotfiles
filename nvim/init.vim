@@ -73,6 +73,27 @@ augroup CursorLine
 augroup END
 :hi CursorLine cterm=NONE guibg=darkred
 
+" Vista for file structure navigation
+
+nmap <F5> :Vista!!<CR> 
+let g:vista#renderer#enable_icon = 1
+let g:vista#renderer#icons = {
+\   "function": "\uf794",
+\   "variable": "\uf71b",
+\  }
+" Show the nearest method/function
+function! NearestMethodOrFunction() abort
+  return get(b:, 'vista_nearest_method_or_function', '')
+endfunction
+
+set statusline+=%{NearestMethodOrFunction()}
+
+" By default vista.vim never run if you don't call it explicitly.
+"
+" If you want to show the nearest function in your statusline automatically,
+" you can add the following line to your vimrc
+autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
+
 " User karabiner to fix C-i and Tab problem
 nnoremap <F6> <C-i>
 
@@ -174,6 +195,7 @@ endfunction
 command! -bang -nargs=? -complete=dir Files
       \ call fzf#vim#files(<q-args>, {'source': s:list_cmd(),
       \                               'options': '--tiebreak=index'}, <bang>0)
+
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -329,11 +351,37 @@ nmap <silent> <Leader>oL :FSRight<cr>
 nmap <silent> <Leader>oK :FSAbove<cr>
 nmap <silent> <Leader>oJ :FSBelow<cr>
 
-" FB Specific
-autocmd BufRead *.cinc set filetype=python
-autocmd BufRead *.cconf set filetype=python
-autocmd BufRead TARGETS set filetype=python
-autocmd Filetype markdown setlocal spell tw=72 colorcolumn=73
-
 " Where is python
-let g:python3_host_prog =  "/home/asoli/fbcode/third-party-buck/platform009/build/python/3.8/bin/python3"
+if filereadable(expand("~/fbcode/third-party-buck/platform009/build/python/3.8/bin/python3"))
+  let g:python3_host_prog =  "/home/asoli/fbcode/third-party-buck/platform009/build/python/3.8/bin/python3"
+endif
+
+" Lightline configuration
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'cocstatus', 'readonly', 'filename', 'modified', 'method' ] ]
+      \ },
+      \ 'component_function': {
+      \   'method': 'NearestMethodOrFunction',
+      \   'cocstatus': 'coc#status'
+      \ },
+      \ }
+" Use autocmd to force lightline update.
+autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
+
+" FB Configuring
+if filereadable(expand("~/.config/fb/coc-settings.json"))
+  echo "Loading Facebook Configuration"
+  let g:coc_config_home = expand("~/.config/fb")
+
+  autocmd BufRead *.cinc set filetype=python
+  autocmd BufRead *.cconf set filetype=python
+  autocmd BufRead *.mcconf set filetype=python
+  autocmd BufRead TARGETS set filetype=python
+  
+  if filereadable(expand("~/fbcode/third-party-buck/platform009/build/python/3.8/bin/python3"))
+    let g:python3_host_prog =  "/home/asoli/fbcode/third-party-buck/platform009/build/python/3.8/bin/python3"
+  endif
+endif

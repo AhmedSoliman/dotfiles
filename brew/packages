@@ -7,3 +7,4 @@ git
 libgit2
 libtool
 automake
+universal-ctags

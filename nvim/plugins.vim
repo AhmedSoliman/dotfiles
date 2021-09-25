@@ -12,6 +12,10 @@ Plug 'itchyny/lightline.vim'
 Plug 'machakann/vim-highlightedyank'
 Plug 'andymass/vim-matchup'
 Plug 'chriskempson/base16-vim'
+Plug 'itchyny/lightline.vim'
+" Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
+Plug 'liuchengxu/vista.vim'
 
 " General code improvement
 Plug 'scrooloose/nerdcommenter'
