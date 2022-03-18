@@ -1,9 +1,18 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
+" function to source a file if it exists
+function! SourceIfExists(file)
+  if filereadable(expand(a:file))
+    exe 'source' a:file
+  endif
+endfunction
+
+let g:ale_disable_lsp = 1
 " set the runtime path to include Vundle and initialize
 call plug#begin()
 source ~/.config/nvim/plugins.vim
+call SourceIfExists('~/.config/nvim/layers/private/packages.vim')
 call plug#end()            " required
 
 let mapleader = "\<Space>"
@@ -22,13 +31,16 @@ endif
 " ========================================
 " #  EDITOR SETTINGS
 " ========================================
-filetype plugin indent on    " required
+filetype plugin indent on " required
 set autoindent
 set timeoutlen=300 " http://stackoverflow.com/questions/2158516/delay-before-o-opens-a-new-line
 set encoding=utf-8
 set scrolloff=2 " Keeps 2 lines visible around the cursor
 set noshowmode
-set nofoldenable " Don't fold anything
+"set nofoldenable " Don't fold anything
+set foldlevelstart=999
+set foldcolumn=2
+set foldmethod=syntax
 set nowrap
 let g:sneak#s_next = 1
 set title " Update terminal title
@@ -77,10 +89,7 @@ augroup END
 
 nmap <F5> :Vista!!<CR> 
 let g:vista#renderer#enable_icon = 1
-let g:vista#renderer#icons = {
-\   "function": "\uf794",
-\   "variable": "\uf71b",
-\  }
+
 " Show the nearest method/function
 function! NearestMethodOrFunction() abort
   return get(b:, 'vista_nearest_method_or_function', '')
@@ -111,6 +120,9 @@ nmap <leader>; :Buffers<CR>
 
 " map leader + s to save
 nmap <leader>w :w<cr>
+
+" Folding
+nnoremap <tab> za
 
 " Disable Arrow Keys
 noremap <Up> <NOP>
@@ -173,18 +185,22 @@ map <C-n> :NERDTreeToggle<cr>
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+nmap <C-m> :NERDTreeFind<CR> " Highlight currently open buffer in NERDTree
 
 " Formatting
 noremap <C-F> :Neoformat<CR>
 " <leader>s for Rg search
-noremap <leader>s :Rg
-let g:fzf_layout = { 'down': '~30%' }
+noremap <leader>f :Rg
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.5, 'highlight': 'Comment' } }
+
 command! -bang -nargs=* Rg
       \ call fzf#vim#grep(
-      \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
+      \   'rg --column --line-number --no-heading --color=always -- '.shellescape(<q-args>), 1,
       \   <bang>0 ? fzf#vim#with_preview('up:60%')
       \           : fzf#vim#with_preview('right:50%:hidden', '?'),
       \   <bang>0)
+
+
 
 function! s:list_cmd()
   let base = fnamemodify(expand('%'), ':h:.:S')
@@ -192,10 +208,16 @@ function! s:list_cmd()
   " return 'fd --type file --follow' 
 endfunction
 
+" command! -bang -nargs=? -complete=dir Files
+"       \ call fzf#vim#files(<q-args>, {'source': s:list_cmd(),
+"       \                               'options': '--tiebreak=index'}, <bang>0)
+
+
+let g:fzf_preview_cmd = g:plug_home . "/fzf.vim/bin/preview.sh {}"
 command! -bang -nargs=? -complete=dir Files
       \ call fzf#vim#files(<q-args>, {'source': s:list_cmd(),
-      \                               'options': '--tiebreak=index'}, <bang>0)
-
+      \                               'options': ['--tiebreak=index', '--preview', g:fzf_preview_cmd ]
+      \                                }, <bang>0)
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -259,8 +281,8 @@ omap if <Plug>(coc-funcobj-i)
 omap af <Plug>(coc-funcobj-a)
 
 " Use <TAB> for selections ranges.
-nmap <silent> <TAB> <Plug>(coc-range-select)
-xmap <silent> <TAB> <Plug>(coc-range-select)
+"nmap <silent> <TAB> <Plug>(coc-range-select)
+"xmap <silent> <TAB> <Plug>(coc-range-select)
 
 " Find symbol of current document.
 nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
@@ -306,26 +328,26 @@ autocmd Filetype html,xml,xsl,php source ~/.config/nvim/scripts/closetag.vim
 
 " cctags
 " cctags auto updating
-function! DelTagOfFile(file)
-  let fullpath = a:file
-  let cwd = getcwd()
-  let tagfilename = cwd . "/tags"
-  let f = substitute(fullpath, cwd . "/", "", "")
-  let f = escape(f, './')
-  let cmd = 'sed -i "/' . f . '/d" "' . tagfilename . '"'
-  let resp = system(cmd)
-endfunction
+" function! DelTagOfFile(file)
+"   let fullpath = a:file
+"   let cwd = getcwd()
+"   let tagfilename = cwd . "/tags"
+"   let f = substitute(fullpath, cwd . "/", "", "")
+"   let f = escape(f, './')
+"   let cmd = 'sed -i "/' . f . '/d" "' . tagfilename . '"'
+"   let resp = system(cmd)
+" endfunction
 
-function! UpdateTags()
-  let f = expand("%:p")
-  let cwd = getcwd()
-  let tagfilename = cwd . "/tags"
-  let cmd = 'ctags -a -f ' . tagfilename . ' --c++-kinds=+p --fields=+iaS --extra=+q ' . '"' . f . '"'
-  call DelTagOfFile(f)
-  let resp = system(cmd)
-endfunction
-
-autocmd BufWritePost *.cpp,*.h,*.c call UpdateTags()
+" function! UpdateTags()
+"   let f = expand("%:p")
+"   let cwd = getcwd()
+"   let tagfilename = cwd . "/tags"
+"   let cmd = 'ctags -a -f ' . tagfilename . ' --c++-kinds=+p --fields=+iaS --extra=+q ' . '"' . f . '"'
+"   call DelTagOfFile(f)
+"   let resp = system(cmd)
+" endfunction
+" 
+" autocmd BufWritePost *.cpp,*.h,*.c call UpdateTags()
 autocmd BufWritePre *.c :%s/\s\+$//e
 autocmd BufWritePre *.cpp :%s/\s\+$//e
 autocmd BufWritePre *.py :%s/\s\+$//e
@@ -351,21 +373,33 @@ nmap <silent> <Leader>oL :FSRight<cr>
 nmap <silent> <Leader>oK :FSAbove<cr>
 nmap <silent> <Leader>oJ :FSBelow<cr>
 
-" Where is python
-if filereadable(expand("~/fbcode/third-party-buck/platform009/build/python/3.8/bin/python3"))
-  let g:python3_host_prog =  "/home/asoli/fbcode/third-party-buck/platform009/build/python/3.8/bin/python3"
-endif
-
 " Lightline configuration
 let g:lightline = {
       \ 'colorscheme': 'wombat',
+      \ 'mode_map': {
+      \         'n' : 'N',
+      \         'i' : 'I',
+      \         'R' : 'R',
+      \         'v' : 'V',
+      \         'V' : 'VL',
+      \         "\<C-v>": 'VB',
+      \         'c' : 'C',
+      \         's' : 'S',
+      \         'S' : 'SL',
+      \         "\<C-s>": 'SB',
+      \         't': 'T',
+      \         },
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'cocstatus', 'readonly', 'filename', 'modified', 'method' ] ]
+      \             [ 'cocstatus', 'readonly', 'relativepath', 'modified', 'method' ] ],
+      \   'right': [ [ 'gitbranch' ],
+      \              [ 'percent' ],
+      \              [ 'filetype'] ]
       \ },
       \ 'component_function': {
       \   'method': 'NearestMethodOrFunction',
-      \   'cocstatus': 'coc#status'
+      \   'cocstatus': 'coc#status',
+      \   'gitbranch': 'FugitiveHead'
       \ },
       \ }
 " Use autocmd to force lightline update.
@@ -385,3 +419,14 @@ if filereadable(expand("~/.config/fb/coc-settings.json"))
     let g:python3_host_prog =  "/home/asoli/fbcode/third-party-buck/platform009/build/python/3.8/bin/python3"
   endif
 endif
+
+
+
+if !exists("g:ale_linters")
+    let g:ale_linters = {}
+endif
+
+" Layered Config
+call SourceIfExists('~/.config/nvim/layers/private/vimrc.vim')
+
+
