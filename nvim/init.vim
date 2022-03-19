@@ -22,27 +22,21 @@ if !has('gui_running')
   set t_Co=256
 endif
 
-" Load theme from file if any
-if filereadable(expand("~/.vimrc_background"))
-  let base16colorspace=256
-  source ~/.vimrc_background
-endif
-
 " ========================================
 " #  EDITOR SETTINGS
 " ========================================
 filetype plugin indent on " required
 set autoindent
+set smartindent
 set timeoutlen=300 " http://stackoverflow.com/questions/2158516/delay-before-o-opens-a-new-line
 set encoding=utf-8
-set scrolloff=2 " Keeps 2 lines visible around the cursor
+set scrolloff=8 " Keeps 8 lines visible around the cursor
+set sidescrolloff=15 " Keep 15 characters to the right on scrolling
 set noshowmode
-"set nofoldenable " Don't fold anything
 set foldlevelstart=999
-set foldcolumn=2
+set foldcolumn=0
 set foldmethod=syntax
 set nowrap
-let g:sneak#s_next = 1
 set title " Update terminal title
 set number
 set relativenumber
@@ -51,17 +45,21 @@ set backspace=indent,eol,start
 set showbreak=… " show ellipsis at breaking
 set linebreak
 set visualbell
-set colorcolumn=80 " A colored column at 80 chars
+set colorcolumn=81 " A colored column at 80 chars
 set showcmd
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set laststatus=2 " Show Vim Status Line All The Time
-set mouse=a
+set mouse=n " Mouse in normal mode only, good for copy-pasting
 set ruler
-set lazyredraw
+"set lazyredraw
 set showmatch " Show the matching bracket briefly when we close
 set shortmess+=c " don't give |ins-completion-menu| messages.
-set listchars=nbsp:¬,extends:»,precedes:«,trail:•
+set list listchars=nbsp:¬,extends:»,precedes:«,trail:• " Display tabs and trailing spaces visually
+set hidden " Allow buffers to be hidden before saving
+
+" Put contents of unnamed register in OS X clipboard
+set clipboard=unnamed
 
 " Plugin settings
 let g:secure_modelines_allowed_items = [
@@ -85,8 +83,8 @@ augroup CursorLine
 augroup END
 :hi CursorLine cterm=NONE guibg=darkred
 
-" Vista for file structure navigation
 
+" Vista for file structure navigation
 nmap <F5> :Vista!!<CR> 
 let g:vista#renderer#enable_icon = 1
 
@@ -116,7 +114,7 @@ nnoremap k gk
 
 " Open hotkeys
 map <C-p> :Files<CR>
-nmap <leader>; :Buffers<CR>
+nnoremap <C-b> :Buffers<CR>
 
 " map leader + s to save
 nmap <leader>w :w<cr>
@@ -143,6 +141,9 @@ nnoremap <silent> * *zz
 nnoremap <silent> # #zz
 nnoremap <silent> g* g*zz
 
+"Clear current search highlight by hitting g + /
+nmap <silent> g/ :nohlsearch<CR>
+
 " Better indentation in Visual Mode
 vnoremap < <gv
 vnoremap > >gv
@@ -150,6 +151,7 @@ vnoremap > >gv
 " Disable Ex Mode
 noremap Q <NOP>
 
+let g:tmux_resizer_no_mappings = 0 " Fix tmux resizing
 
 " Let's save undo info!
 if !isdirectory($HOME."/.vim")
@@ -173,6 +175,15 @@ set wildmenu
 set wildmode=list:longest
 set wildignore=.hg,.svn,*~,*.png,*.jpg,*.gif,*.settings,Thumbs.db,*.min.js,*.swp,publish/*,intermediate/*,*.o,*.hi,Zend,vendor
 
+" highlights yanked text for a little extra visual feedback
+" so we don't need to rely on visual mode as much, try yip or y4y
+augroup highlight_yank
+  if has("nvim-0.5")
+    autocmd!
+    autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank()
+  endif
+augroup END
+
 " Wrapping options
 set formatoptions=tc " wrap text and comments using textwidth
 set formatoptions+=r " continue comments when pressing ENTER in I mode
@@ -184,14 +195,45 @@ set formatoptions+=b " auto-wrap in insert mode, and do not wrap old long lines
 map <C-n> :NERDTreeToggle<cr>
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-nmap <C-m> :NERDTreeFind<CR> " Highlight currently open buffer in NERDTree
+" Exit Vim if NERDTree is the only window remaining in the only tab.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+" Open NERDTree if vim starts with directory
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists('s:std_in') |
+    \ execute 'NERDTree' argv()[0] | wincmd p | enew | execute 'cd '.argv()[0] | endif
+" <Space>m to locate the current open file in NERDTree
+noremap <silent> <leader>m :NERDTreeFind<CR> " Highlight currently open buffer in NERDTree
+
+" Close the tab if NERDTree is the only window remaining in it.
+autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+
+" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
+autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
 
 " Formatting
 noremap <C-F> :Neoformat<CR>
-" <leader>s for Rg search
-noremap <leader>f :Rg
+" <leader>f for Rg search
+nnoremap <silent> <leader>f :Rg<CR>
+
+" ----------- FZF -----------
+
+" Customize fzf colors to match your color scheme
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.5, 'highlight': 'Comment' } }
+let g:fzf_sink = 'e'
 
 command! -bang -nargs=* Rg
       \ call fzf#vim#grep(
@@ -200,18 +242,21 @@ command! -bang -nargs=* Rg
       \           : fzf#vim#with_preview('right:50%:hidden', '?'),
       \   <bang>0)
 
+function! s:fzf_statusline()
+  " Override statusline as you like
+  highlight fzf1 ctermfg=161 ctermbg=251
+  highlight fzf2 ctermfg=23 ctermbg=251
+  highlight fzf3 ctermfg=237 ctermbg=251
+  setlocal statusline=%#fzf1#\ >\ %#fzf2#fz%#fzf3#f
+endfunction
 
+autocmd! User FzfStatusLine call <SID>fzf_statusline()
 
 function! s:list_cmd()
   let base = fnamemodify(expand('%'), ':h:.:S')
   return base == '.' ? 'fd --type file --follow' : printf('fd --type file --follow | proximity-sort %s', shellescape(expand('%')))
   " return 'fd --type file --follow' 
 endfunction
-
-" command! -bang -nargs=? -complete=dir Files
-"       \ call fzf#vim#files(<q-args>, {'source': s:list_cmd(),
-"       \                               'options': '--tiebreak=index'}, <bang>0)
-
 
 let g:fzf_preview_cmd = g:plug_home . "/fzf.vim/bin/preview.sh {}"
 command! -bang -nargs=? -complete=dir Files
@@ -280,15 +325,12 @@ xmap af <Plug>(coc-funcobj-a)
 omap if <Plug>(coc-funcobj-i)
 omap af <Plug>(coc-funcobj-a)
 
-" Use <TAB> for selections ranges.
-"nmap <silent> <TAB> <Plug>(coc-range-select)
-"xmap <silent> <TAB> <Plug>(coc-range-select)
-
 " Find symbol of current document.
-nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+nnoremap <silent> <space>o  :<C-u>CocFzfList outline<cr>
 
 " Search workspace symbols.
-nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+nnoremap <silent> <space>s  :<C-u>CocFzfList symbols<cr>
+nnoremap <silent> <space>r  :<C-u>CocFzfListResume<cr>
 
 " Implement methods for trait
 nnoremap <silent> <space>i  :call CocActionAsync('codeAction', '', 'Implement missing members')<cr>
@@ -301,14 +343,6 @@ nnoremap <silent> <space>a  :CocAction<cr>
 " Leave paste mode when leaving insert mode
 autocmd InsertLeave * set nopaste
 
-" Follow Rust code style rules
-au Filetype rust source ~/.config/nvim/scripts/spacetab.vim
-au Filetype rust set colorcolumn=100
-" rust
-let g:rustfmt_autosave = 1
-let g:rustfmt_emit_files = 1
-let g:rustfmt_fail_silently = 0
-set updatetime=300
 
 " Help filetype detection
 autocmd BufRead *.plot set filetype=gnuplot
@@ -326,28 +360,6 @@ autocmd Filetype gitcommit                         setlocal spell tw=72 colorcol
 " Script plugins
 autocmd Filetype html,xml,xsl,php source ~/.config/nvim/scripts/closetag.vim
 
-" cctags
-" cctags auto updating
-" function! DelTagOfFile(file)
-"   let fullpath = a:file
-"   let cwd = getcwd()
-"   let tagfilename = cwd . "/tags"
-"   let f = substitute(fullpath, cwd . "/", "", "")
-"   let f = escape(f, './')
-"   let cmd = 'sed -i "/' . f . '/d" "' . tagfilename . '"'
-"   let resp = system(cmd)
-" endfunction
-
-" function! UpdateTags()
-"   let f = expand("%:p")
-"   let cwd = getcwd()
-"   let tagfilename = cwd . "/tags"
-"   let cmd = 'ctags -a -f ' . tagfilename . ' --c++-kinds=+p --fields=+iaS --extra=+q ' . '"' . f . '"'
-"   call DelTagOfFile(f)
-"   let resp = system(cmd)
-" endfunction
-" 
-" autocmd BufWritePost *.cpp,*.h,*.c call UpdateTags()
 autocmd BufWritePre *.c :%s/\s\+$//e
 autocmd BufWritePre *.cpp :%s/\s\+$//e
 autocmd BufWritePre *.py :%s/\s\+$//e
@@ -420,13 +432,43 @@ if filereadable(expand("~/.config/fb/coc-settings.json"))
   endif
 endif
 
+let g:ale_sign_error = '●' " Less aggressive than the default '>>'
+let g:ale_sign_warning = '.'
+let g:ale_virtualtext_cursor = 1
+let g:ale_virtualtext_prefix = "      "
+" nnoremap <silent> gj :ALENext<cr>
+" nnoremap <silent> gk :ALEPrevious<cr>
 
 
 if !exists("g:ale_linters")
     let g:ale_linters = {}
 endif
 
+" ================== treesitter =================
+
+lua <<LUA
+require('nvim-treesitter.configs').setup {
+  ensure_installed = "maintained",
+  highlight = { enable = true },
+  incremental_selection = { enable = true },
+  textobjects = { enable = true },
+}
+LUA
+" Experimental
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
+
 " Layered Config
 call SourceIfExists('~/.config/nvim/layers/private/vimrc.vim')
 
+" Load theme from file if any
+if filereadable(expand("~/.vimrc_background"))
+  let base16colorspace=256
+  source ~/.vimrc_background
+endif
 
+hi clear SpellCap " fixes the ugly color on ALE errors
+hi Normal guibg=NONE ctermbg=NONE
+hi LineNr guibg=NONE ctermbg=NONE
+hi SignColumn guibg=NONE ctermbg=NONE
+hi EndOfBuffer guibg=NONE ctermbg=NONE

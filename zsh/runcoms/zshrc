@@ -24,3 +24,14 @@ bindkey '^w' backward-kill-word
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+# Custom unix utilities
+alias rg="rg --iglob='!tags'"
+alias ls='exa'
+alias ll='exa -l --icons --git'
+alias lt='exa -l --icons --git --tree'
+alias lll='exa -la --icons --git'
+alias vim='nvim'
+alias cat='bat'
+

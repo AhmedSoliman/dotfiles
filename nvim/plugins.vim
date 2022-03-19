@@ -4,7 +4,6 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 " VIM enhancements
 Plug 'ciaranm/securemodelines'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'justinmk/vim-sneak'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'christoomey/vim-tmux-navigator'
@@ -14,7 +13,8 @@ Plug 'andymass/vim-matchup'           " extended % key matching
 " LSP
 Plug 'neovim/nvim-lspconfig'             " out of the box LSP configs for common langs
 Plug 'ray-x/lsp_signature.nvim'          " floating signature 'as you type'
-
+Plug 'nathunsmitty/nvim-ale-diagnostic'  " route lsp diagnostics to ALE
+Plug 'glepnir/lspsaga.nvim'              " code action plugin
 
 " GUI enhancements
 Plug 'scrooloose/nerdtree'
@@ -23,6 +23,9 @@ Plug 'machakann/vim-highlightedyank'
 Plug 'andymass/vim-matchup'
 Plug 'chriskempson/base16-vim'
 Plug 'liuchengxu/vista.vim'
+Plug 'milkypostman/vim-togglelist'    " <leader>q to toggle quickfix
+Plug 'kshenoy/vim-signature'          " show marks in the gutter
+
 
 " General code improvement
 Plug 'scrooloose/nerdcommenter'
@@ -31,9 +34,12 @@ Plug 'sbdchd/neoformat'
 " Semantic language support
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'dense-analysis/ale'
+Plug 'antoinemadec/coc-fzf' " use fzf for coc-list windows
 
 " Tmux Integration
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'melonmanchan/vim-tmux-resizer'
+Plug 'benmills/vimux'
 
 " C/C++ Related
 Plug 'derekwyatt/vim-fswitch'

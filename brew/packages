@@ -1,6 +1,8 @@
+fd
+ripgrep
 tmux
 luajit
-vim --with-python --with-luajit
+neovim
 socat
 python
 git
@@ -8,3 +10,4 @@ libgit2
 libtool
 automake
 universal-ctags
+glow
