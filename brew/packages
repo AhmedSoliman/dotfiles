@@ -10,4 +10,5 @@ libgit2
 libtool
 automake
 universal-ctags
+vale
 glow
