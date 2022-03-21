@@ -118,6 +118,7 @@ nnoremap <C-b> :Buffers<CR>
 
 " map leader + s to save
 nmap <leader>w :w<cr>
+nmap <leader>x :q<cr>
 
 " Folding
 nnoremap <tab> za
