@@ -35,7 +35,7 @@ set sidescrolloff=15 " Keep 15 characters to the right on scrolling
 set noshowmode
 set foldlevelstart=999
 set foldcolumn=0
-set foldmethod=syntax
+set foldnestmax=3
 set nowrap
 set title " Update terminal title
 set number
