@@ -46,6 +46,7 @@ path=(
   $(pyenv root)/shims
   /usr/local/{bin,sbin}
   ~/.cargo/bin
+  ~/bin
   $path
 )
 
@@ -66,8 +67,4 @@ fi
 
 export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
 
-alias vim="nvim"
-alias rg="rg --iglob='!tags'"
-alias ls='exa'
-alias ll='exa -l'
-alias lll='exa -la'
+[ -f ~/.asoli_custom.zsh ] && source ~/.asoli_custom.zsh

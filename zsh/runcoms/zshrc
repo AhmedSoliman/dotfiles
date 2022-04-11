@@ -16,6 +16,8 @@ fpath=(/usr/local/share/zsh-completions $fpath)
 
 source "$HOME/.config/base16-shell/base16-shell.plugin.zsh"
 
+export FZF_DEFAULT_COMMAND='fd --type f'
+
 # No lag after we hit esc
 export KEYTIMEOUT=1
 bindkey '^r' history-incremental-search-backward
@@ -34,4 +36,3 @@ alias lt='exa -l --icons --git --tree'
 alias lll='exa -la --icons --git'
 alias vim='nvim'
 alias cat='bat'
-
