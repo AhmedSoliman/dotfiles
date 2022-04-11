@@ -469,6 +469,7 @@ if filereadable(expand("~/.vimrc_background"))
 endif
 
 hi clear SpellCap " fixes the ugly color on ALE errors
+hi clear SpellBad " fixes the ugly color on ALE errors
 hi Normal guibg=NONE ctermbg=NONE
 hi LineNr guibg=NONE ctermbg=NONE
 hi SignColumn guibg=NONE ctermbg=NONE
