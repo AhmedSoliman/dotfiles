@@ -36,3 +36,5 @@ alias lt='exa -l --icons --git --tree'
 alias lll='exa -la --icons --git'
 alias vim='nvim'
 alias cat='bat'
+
+[ -f ~/.asoli_custom.zshrc ] && source ~/.asoli_custom.zshrc

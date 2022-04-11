@@ -67,4 +67,4 @@ fi
 
 export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
 
-[ -f ~/.asoli_custom.zsh ] && source ~/.asoli_custom.zsh
+[ -f ~/.asoli_custom.zprofile ] && source ~/.asoli_custom.zprofile
