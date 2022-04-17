@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>logoutKeywordEnabled</key>
+	<false/>
+	<key>restartKeywordEnabled</key>
+	<false/>
+	<key>shutdownKeywordEnabled</key>
+	<false/>
+	<key>volumedownKeywordEnabled</key>
+	<false/>
+	<key>volumeupKeywordEnabled</key>
+	<false/>
+</dict>
+</plist>
