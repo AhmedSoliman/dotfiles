@@ -1,0 +1,82 @@
+sethandler <C-o> n:vim
+
+set NERDTree
+Plug 'machakann/vim-highlightedyank'
+
+let mapleader = "\<Space>"
+" Start scrolling when we're 8 lines away from margins
+set scrolloff=8
+set sidescrolloff=15
+set sidescroll=1
+set relativenumber
+set number
+set visualbell
+set showcmd
+
+" Put contents of unnamed register in OS X clipboard
+set clipboard=unnamed
+
+" Better j, k, Move by line
+nnoremap j gj
+nnoremap k gk
+
+nmap <leader>L <Action>(RecentLocations)
+nmap <leader>g <Action>(GotoDeclaration)
+nmap <leader>o <Action>(FileStructurePopup)
+nmap <leader>c <Action>(GotoClass)
+nmap <leader>s <Action>(GotoSymbol)
+nmap <leader>a <Action>(SearchEverywhere)
+nmap <leader>b <Action>(Blaze.PartialSync)
+nmap tc <Action>(CloseAllEditorsButActive)
+" Behave more like vim when jumping back and forth
+nnoremap <F6> <Action>(Back)
+nnoremap <C-i> <Action>(Forward)
+" Replace annoying Shift+F6 combo
+nmap ,r <Action>(RenameElement)
+nmap <leader>h <Action>(HideAllWindows)
+nmap <C-h> <Action>(PrevSplitter)
+nmap <C-l> <Action>(NextSplitter)
+" Take currently highlighted pane and split it to the right
+nmap <C-w>L <Action>(MoveTabRight)
+" Get file outline as popup
+nmap <C-p> <Action>(GotoFile)
+" Outline
+nmap <C-b> <Action>(RecentFiles)
+" map <C-n> <Action>(ActivateProjectToolWindow)
+map <C-n> :NERDTreeToggle<CR>
+" Show error or jump to next error
+map <leader>e <Action>(ShowErrorDescription)
+" Highlight current file in project view
+map <leader>m <Action>(SelectInProjectView)
+" Share clipboard with rest of macOS
+set clipboard+=unnamed
+
+set incsearch " Incremental search
+set ignorecase smartcase " Disables ignorecase if the search term has capital
+
+" Search results centered please
+nmap <silent> n nzz
+nmap <silent> N Nzz
+nmap <silent> * *zz
+nmap <silent> # #zz
+nmap <silent> g* g*zz
+
+nmap <silent> gy <Action>(GotoTypeDeclaration)
+nmap <silent> gi <Action>(GotoImplementation)
+nmap <silent> gr <Action>(FindUsages)
+nmap <leader>t <Action>(GotoTest)
+
+"clear current search highlight by hitting g + /
+nmap <silent> g/ :nohlsearch<cr>
+
+" Better indentation in Visual Mode
+vnoremap < <gv
+vnoremap > >gv
+" nmap <C-v> <Action>(OpenInRightSplit)
+
+" Disable Ex Mode
+nmap Q <NOP>
+
+" Toggle between the last two buffers
+nnoremap <leader><leader> <C-6>
+nmap <Right> <NOP>

@@ -7,7 +7,7 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'christoomey/vim-tmux-navigator'
-"Plug 'romgrk/nvim-treesitter-context' " show function context as you scroll
+Plug 'romgrk/nvim-treesitter-context' " show function context as you scroll
 Plug 'andymass/vim-matchup'           " extended % key matching
 
 " LSP
