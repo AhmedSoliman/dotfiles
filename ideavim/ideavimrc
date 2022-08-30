@@ -27,7 +27,7 @@ nmap <leader>c <Action>(GotoClass)
 nmap <leader>s <Action>(GotoSymbol)
 nmap <leader>a <Action>(SearchEverywhere)
 nmap <leader>b <Action>(Blaze.PartialSync)
-nmap tc <Action>(CloseAllEditorsButActive)
+nmap <leader>tc <Action>(CloseAllEditorsButActive)
 " Behave more like vim when jumping back and forth
 nnoremap <F6> <Action>(Back)
 nnoremap <C-i> <Action>(Forward)
@@ -53,6 +53,12 @@ set clipboard+=unnamed
 
 set incsearch " Incremental search
 set ignorecase smartcase " Disables ignorecase if the search term has capital
+
+" Quick window navigation
+map <C-J> <C-W>j
+map <C-K> <C-W>k
+map <C-L> <C-W>l
+map <C-H> <C-W>h
 
 " Search results centered please
 nmap <silent> n nzz
@@ -80,3 +86,16 @@ nmap Q <NOP>
 " Toggle between the last two buffers
 nnoremap <leader><leader> <C-6>
 nmap <Right> <NOP>
+
+" Greatest remap EVER!! 
+" Let me explain, this remap while in visiual mode
+" will delete what is currently highlighted and replace it 
+" with what is in the register BUT it will YANK (delete) it 
+" to a VOID register. Meaning I still have what I originally had
+" when I pasted. I don't loose the previous thing I YANKED!
+vnoremap <leader>p "_dP
+" Toggle ToggleDistractionFreeMode
+nmap <Leader>df :action ToggleDistractionFreeMode<CR>
+
+" Quick Quit
+nnoremap <leader>q :q <CR>

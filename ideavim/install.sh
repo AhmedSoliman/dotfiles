@@ -1,3 +1,3 @@
 #!/bin/bash
 
-ln -vfs ~/.dotfiles/idea/ideavimrc ~/.ideavimrc
+ln -vfs ~/.dotfiles/ideavim/ideavimrc ~/.ideavimrc
