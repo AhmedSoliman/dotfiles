@@ -116,10 +116,6 @@ let s:TYPE = {
 let s:loaded = get(s:, 'loaded', {})
 let s:triggers = get(s:, 'triggers', {})
 
-function! s:is_powershell(shell)
-  return a:shell =~# 'powershell\(\.exe\)\?$' || a:shell =~# 'pwsh\(\.exe\)\?$'
-endfunction
-
 function! s:isabsolute(dir) abort
   return a:dir =~# '^/' || (has('win32') && a:dir =~? '^\%(\\\|[A-Z]:\)')
 endfunction
@@ -242,8 +238,6 @@ function! plug#begin(...)
     let home = s:path(s:plug_fnamemodify(s:plug_expand(a:1), ':p'))
   elseif exists('g:plug_home')
     let home = s:path(g:plug_home)
-  elseif has('nvim')
-    let home = stdpath('data') . '/plugged'
   elseif !empty(&rtp)
     let home = s:path(split(&rtp, ',')[0]) . '/plugged'
   else
@@ -269,7 +263,7 @@ function! s:define_commands()
   endif
   if has('win32')
   \ && &shellslash
-  \ && (&shell =~# 'cmd\(\.exe\)\?$' || s:is_powershell(&shell))
+  \ && (&shell =~# 'cmd\(\.exe\)\?$' || &shell =~# 'powershell\(\.exe\)\?$')
     return s:err('vim-plug does not support shell, ' . &shell . ', when shellslash is set.')
   endif
   if !has('nvim')
@@ -352,7 +346,7 @@ function! plug#end()
   endif
   let lod = { 'ft': {}, 'map': {}, 'cmd': {} }
 
-  if get(g:, 'did_load_filetypes', 0)
+  if exists('g:did_load_filetypes')
     filetype off
   endif
   for name in g:plugs_order
@@ -407,7 +401,7 @@ function! plug#end()
 
   for [map, names] in items(lod.map)
     for [mode, map_prefix, key_prefix] in
-          \ [['i', '<C-\><C-O>', ''], ['n', '', ''], ['v', '', 'gv'], ['o', '', '']]
+          \ [['i', '<C-O>', ''], ['n', '', ''], ['v', '', 'gv'], ['o', '', '']]
       execute printf(
       \ '%snoremap <silent> %s %s:<C-U>call <SID>lod_map(%s, %s, %s, "%s")<CR>',
       \ mode, map, map_prefix, string(map), string(names), mode != 'i', key_prefix)
@@ -509,7 +503,7 @@ if s:is_win
     let batchfile = s:plug_tempname().'.bat'
     call writefile(s:wrap_cmds(a:cmd), batchfile)
     let cmd = plug#shellescape(batchfile, {'shell': &shell, 'script': 0})
-    if s:is_powershell(&shell)
+    if &shell =~# 'powershell\(\.exe\)\?$'
       let cmd = '& ' . cmd
     endif
     return [batchfile, cmd]
@@ -990,7 +984,7 @@ function! s:chsh(swap)
     set shell=sh
   endif
   if a:swap
-    if s:is_powershell(&shell)
+    if &shell =~# 'powershell\(\.exe\)\?$' || &shell =~# 'pwsh$'
       let &shellredir = '2>&1 | Out-File -Encoding UTF8 %s'
     elseif &shell =~# 'sh' || &shell =~# 'cmd\(\.exe\)\?$'
       set shellredir=>%s\ 2>&1
@@ -1210,8 +1204,7 @@ function! s:update_impl(pull, force, args) abort
   normal! 2G
   silent! redraw
 
-  " Set remote name, overriding a possible user git config's clone.defaultRemoteName
-  let s:clone_opt = ['--origin', 'origin']
+  let s:clone_opt = []
   if get(g:, 'plug_shallow', 1)
     call extend(s:clone_opt, ['--depth', '1'])
     if s:git_version_requirement(1, 7, 10)
@@ -2232,7 +2225,7 @@ function! plug#shellescape(arg, ...)
   let script = get(opts, 'script', 1)
   if shell =~# 'cmd\(\.exe\)\?$'
     return s:shellesc_cmd(a:arg, script)
-  elseif s:is_powershell(shell)
+  elseif shell =~# 'powershell\(\.exe\)\?$' || shell =~# 'pwsh$'
     return s:shellesc_ps1(a:arg)
   endif
   return s:shellesc_sh(a:arg)
@@ -2284,7 +2277,7 @@ function! s:system(cmd, ...)
         return system(a:cmd)
       endif
       let cmd = join(map(copy(a:cmd), 'plug#shellescape(v:val, {"shell": &shell, "script": 0})'))
-      if s:is_powershell(&shell)
+      if &shell =~# 'powershell\(\.exe\)\?$'
         let cmd = '& ' . cmd
       endif
     else
@@ -2621,34 +2614,26 @@ function! s:preview_commit()
 
   let sha = matchstr(getline('.'), '^  \X*\zs[0-9a-f]\{7,9}')
   if empty(sha)
-    let name = matchstr(getline('.'), '^- \zs[^:]*\ze:$')
-    if empty(name)
-      return
-    endif
-    let title = 'HEAD@{1}..'
-    let command = 'git diff --no-color HEAD@{1}'
-  else
-    let title = sha
-    let command = 'git show --no-color --pretty=medium '.sha
-    let name = s:find_name(line('.'))
+    return
   endif
 
+  let name = s:find_name(line('.'))
   if empty(name) || !has_key(g:plugs, name) || !isdirectory(g:plugs[name].dir)
     return
   endif
 
   if exists('g:plug_pwindow') && !s:is_preview_window_open()
     execute g:plug_pwindow
-    execute 'e' title
+    execute 'e' sha
   else
-    execute 'pedit' title
+    execute 'pedit' sha
     wincmd P
   endif
-  setlocal previewwindow filetype=git buftype=nofile bufhidden=wipe nobuflisted modifiable
+  setlocal previewwindow filetype=git buftype=nofile nobuflisted modifiable
   let batchfile = ''
   try
     let [sh, shellcmdflag, shrd] = s:chsh(1)
-    let cmd = 'cd '.plug#shellescape(g:plugs[name].dir).' && '.command
+    let cmd = 'cd '.plug#shellescape(g:plugs[name].dir).' && git show --no-color --pretty=medium '.sha
     if s:is_win
       let [batchfile, cmd] = s:batchfile(cmd)
     endif
@@ -2774,9 +2759,9 @@ function! s:snapshot(force, ...) abort
   1
   let anchor = line('$') - 3
   let names = sort(keys(filter(copy(g:plugs),
-        \'has_key(v:val, "uri") && isdirectory(v:val.dir)')))
+        \'has_key(v:val, "uri") && !has_key(v:val, "commit") && isdirectory(v:val.dir)')))
   for name in reverse(names)
-    let sha = has_key(g:plugs[name], 'commit') ? g:plugs[name].commit : s:git_revision(g:plugs[name].dir)
+    let sha = s:git_revision(g:plugs[name].dir)
     if !empty(sha)
       call append(anchor, printf("silent! let g:plugs['%s'].commit = '%s'", name, sha))
       redraw

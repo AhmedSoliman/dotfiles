@@ -1,5 +1,8 @@
 " Core
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/nvim-treesitter-context'
+Plug 'nvim-treesitter/playground'
+
 
 " VIM enhancements
 Plug 'ciaranm/securemodelines'
@@ -7,7 +10,6 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'romgrk/nvim-treesitter-context' " show function context as you scroll
 Plug 'andymass/vim-matchup'           " extended % key matching
 
 " LSP
@@ -29,7 +31,7 @@ Plug 'kshenoy/vim-signature'          " show marks in the gutter
 
 " General code improvement
 Plug 'scrooloose/nerdcommenter'
-Plug 'sbdchd/neoformat'
+" Plug 'sbdchd/neoformat'
 
 " Semantic language support
 Plug 'neoclide/coc.nvim', {'branch': 'release'}

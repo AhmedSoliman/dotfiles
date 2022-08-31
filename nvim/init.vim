@@ -212,7 +212,9 @@ autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_
     \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
 
 " Formatting
-noremap <C-F> :Neoformat<CR>
+"noremap <C-F> :Neoformat<CR>
+command! -nargs=0 Format :call CocActionAsync('format')
+noremap <C-F> :Format<CR>
 " <leader>f for Rg search
 nnoremap <silent> <leader>f :Rg<CR>
 
@@ -267,30 +269,36 @@ command! -bang -nargs=? -complete=dir Files
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 'Smart' nevigation
-" Use tab for trigger completion with characters ahead and navigate.
-" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-" other plugin before putting this into your config.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
 
-function! s:check_back_space() abort
+" Use <c-space> to trigger completion.
+" if has('nvim')
+"   inoremap <silent><expr> <c-.> coc#refresh()
+" else
+"   inoremap <silent><expr> <c-@> coc#refresh()
+" endif
+
+" Use <cr> to confirm completion
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#_select_confirm()
+                                 \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+" Map <tab> for trigger completion, completion confirm, snippet expand and jump
+" like VSCode: >
+" coc#pum#visible() ? coc#_select_confirm() :
+inoremap <silent><expr> <TAB>
+   \ coc#pum#visible() ? coc#pum#next(1):
+   \ coc#expandableOrJumpable() ?
+   \ "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+   \ CheckBackSpace() ? "\<TAB>" :
+   \ coc#refresh()
+
+"let g:coc_snippet_next = '<tab>'
+
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
+function! CheckBackSpace() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
-
-" Use <c-.> to trigger completion.
-inoremap <silent><expr> <c-.> coc#refresh()
-
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
-" position. Coc only does snippet and additional edit on confirm.
-if exists('*complete_info')
-  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-else
-  imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-endif
 
 " Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
@@ -449,11 +457,60 @@ endif
 
 lua <<LUA
 require('nvim-treesitter.configs').setup {
-  ensure_installed = "maintained",
-  highlight = { enable = true },
+  ensure_installed = {"cpp", "rust", "python", "dockerfile", "go", "java", "json", "markdown", "toml", "yaml", "html", "css", "scss"},
+  auto_install = true,
+  highlight = { enable = true,
+    additional_vim_regex_highlighting = false,
+  },
   incremental_selection = { enable = true },
   textobjects = { enable = true },
+  query_linter = {
+  enable = true,
+  use_virtual_text = true,
+--  lint_events = {"BufWrite", "CursorHold"},
+  },
 }
+
+require'treesitter-context'.setup{
+    enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
+    max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
+    trim_scope = 'outer', -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
+    patterns = { -- Match patterns for TS nodes. These get wrapped to match at word boundaries.
+        -- For all filetypes
+        -- Note that setting an entry here replaces all other patterns for this entry.
+        -- By setting the 'default' entry below, you can control which nodes you want to
+        -- appear in the context window.
+        default = {
+            'class',
+            'function',
+            'method',
+            -- 'for', -- These won't appear in the context
+            -- 'while',
+            -- 'if',
+            -- 'switch',
+            -- 'case',
+        },
+        -- Example for a specific filetype.
+        -- If a pattern is missing, *open a PR* so everyone can benefit.
+        --   rust = {
+        --       'impl_item',
+        --   },
+    },
+    exact_patterns = {
+        -- Example for a specific filetype with Lua patterns
+        -- Treat patterns.rust as a Lua pattern (i.e "^impl_item$" will
+        -- exactly match "impl_item" only)
+        -- rust = true,
+    },
+
+    -- [!] The options below are exposed but shouldn't require your attention,
+    --     you can safely ignore them.
+
+    zindex = 20, -- The Z-index of the context window
+    mode = 'cursor',  -- Line used to calculate context. Choices: 'cursor', 'topline'
+    separator = '-', -- Separator between context and content. Should be a single character string, like '-'.
+}
+
 LUA
 " Experimental
 set foldmethod=expr
@@ -474,3 +531,7 @@ hi Normal guibg=NONE ctermbg=NONE
 hi LineNr guibg=NONE ctermbg=NONE
 hi SignColumn guibg=NONE ctermbg=NONE
 hi EndOfBuffer guibg=NONE ctermbg=NONE
+
+" Rust type hinting colours
+"For Types hint 
+hi CocHintSign guibg=bg guifg=DarkGray ctermbg=0 ctermfg=8 cterm=italic,underline

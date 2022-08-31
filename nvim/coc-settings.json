@@ -1,3 +1,5 @@
 {
-  "diagnostic.displayByAle": false
+  "diagnostic.displayByAle": false,
+  "rust-analyzer.inlayHints.parameterHints.enable": false,
+  "rust-analyzer.inlayHints.closingBraceHints.enable": false
 }
