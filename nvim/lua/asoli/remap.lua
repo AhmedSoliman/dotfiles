@@ -1,0 +1,60 @@
+vim.g.mapleader = " "
+-- " Disable Ex mode
+vim.keymap.set("n", "Q", "<NOP>", { noremap = true }) -- Use karabiner to fix C-i and Tab problem
+
+vim.keymap.set("n", "<F6>", "<C-i>", { noremap = true }) -- Use karabiner to fix C-i and Tab problem
+
+-- Disable Arrows
+vim.keymap.set("", "<Up>", "<NOP>", { noremap = true })
+vim.keymap.set("", "<Down>", "<NOP>", { noremap = true })
+vim.keymap.set("", "<Left>", "<NOP>", { noremap = true })
+vim.keymap.set("", "<Right>", "<NOP>", { noremap = true })
+
+vim.keymap.set("n", "<leader>m", ":NvimTreeFindFile<CR>")
+vim.keymap.set("n", "<leader>q", ":qa<CR>")
+-- Better j, k, Move by line
+vim.keymap.set("n", "j", "gj", { noremap = true })
+vim.keymap.set("n", "k", "gk", { noremap = true })
+
+-- Folding
+vim.keymap.set("n", "<tab>", "za", { noremap = true })
+
+vim.keymap.set("n", "<tab>", "za", { noremap = true })
+
+-- Toggle between the last two buffers
+vim.keymap.set("n", "<leader><leader>", "<c-^>", { noremap = true })
+
+-- Diagnostics drawer
+vim.keymap.set("n", "<leader>xx", ":TroubleToggle<CR>", { noremap = true })
+
+
+-- Search results centered please
+vim.keymap.set("n", "n", "nzz", { noremap = true, silent = true })
+vim.keymap.set("n", "N", "Nzz", { noremap = true, silent = true })
+vim.keymap.set("n", "*", "*zz", { noremap = true, silent = true })
+vim.keymap.set("n", "#", "#zz", { noremap = true, silent = true })
+vim.keymap.set("n", "g*", "g*zz", { noremap = true, silent = true })
+
+-- Clear current search highlight by hitten g + /
+vim.keymap.set("n", "g/", ":nohlsearch<CR>", { remap = true, silent = true })
+
+-- Better indentation in visual mode (keep selection)
+vim.keymap.set("v", "<", "<gv", { noremap = true })
+vim.keymap.set("v", ">", ">gv", { noremap = true })
+
+-- Move selection in visual mode (J, K)
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { noremap = true })
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { noremap = true })
+
+-- Copy to end
+vim.keymap.set("n", "Y", "yg$", { remap = true })
+
+-- <leader>p to paste over highlighted but keep register buffer
+vim.keymap.set("x", "<leader>p", "\"_dP")
+
+
+-- LSP Format
+vim.keymap.set("n", "<C-f>", ":LspZeroFormat<CR>")
+
+-- Powerful replace selected word with <leader>x
+vim.keymap.set("n", "<leader>x", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
