@@ -29,8 +29,8 @@ nmap <leader>a <Action>(SearchEverywhere)
 nmap <leader>b <Action>(Blaze.PartialSync)
 nmap <leader>tc <Action>(CloseAllEditorsButActive)
 " Behave more like vim when jumping back and forth
-nnoremap <F6> <Action>(Back)
-nnoremap <C-i> <Action>(Forward)
+nmap <C-o> <Action>(Back)
+nmap <F6> <Action>(Forward)
 " Replace annoying Shift+F6 combo
 nmap ,r <Action>(RenameElement)
 nmap <leader>h <Action>(HideAllWindows)

@@ -40,13 +40,19 @@ typeset -gU cdpath fpath mailpath path
 # cdpath=(
 #   $cdpath
 # )
+[ -f ~/.asoli_custom.zprofile ] && source ~/.asoli_custom.zprofile
 
 # Set the list of directories that Zsh searches for programs.
 path=(
-  $(pyenv root)/shims
+  /opt/homebrew/{bin,sbin}
   /usr/local/{bin,sbin}
   ~/.cargo/bin
   ~/bin
+  $path
+)
+
+path=(
+  $(pyenv root)/shims
   $path
 )
 
@@ -67,4 +73,3 @@ fi
 
 export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
 
-[ -f ~/.asoli_custom.zprofile ] && source ~/.asoli_custom.zprofile
