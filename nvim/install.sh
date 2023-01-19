@@ -1,4 +1,8 @@
 #!/bin/bash
 
-mkdir -p ~/.config/nvim/layers/private ~/.vim-tmp
-ln -vfs ~/.dotfiles/nvim/* ~/.config/nvim/
+ln -vfs ~/.dotfiles/nvim ~/.config/nvim
+
+mkdir -p ~/.vim-tmp
+
+git clone --depth 1 https://github.com/wbthomason/packer.nvim\
+ ~/.local/share/nvim/site/pack/packer/start/packer.nvim
