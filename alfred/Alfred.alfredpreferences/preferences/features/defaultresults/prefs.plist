@@ -6,7 +6,5 @@
 	<array>
 		<string>features.websearch.google.fallback</string>
 	</array>
-	<key>fallbacksMode</key>
-	<integer>1</integer>
 </dict>
 </plist>
