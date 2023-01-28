@@ -1,6 +1,7 @@
 -- Learn the keybindings, see :help lsp-zero-keybindings
 -- Learn to configure LSP servers, see :help lsp-zero-api-showcase
 local lsp = require('lsp-zero')
+local lspconfig = require('lspconfig')
 lsp.preset('recommended')
 
 lsp.ensure_installed({
@@ -9,7 +10,7 @@ lsp.ensure_installed({
   'rust_analyzer',
 })
 
-lsp.skip_server_setup({'rust_analyzer'})
+lsp.skip_server_setup({ 'rust_analyzer' })
 
 -- Fix Undefined global 'vim'
 lsp.configure('sumneko_lua', {
@@ -49,4 +50,59 @@ vim.diagnostic.config({
 
 -- Initialize rust_analyzer with rust-tools
 local rust_lsp = lsp.build_options('rust_analyzer', {})
-require('rust-tools').setup({server = rust_lsp})
+require('rust-tools').setup({ server = rust_lsp })
+
+
+lspconfig.yamlls.setup({
+  settings = {
+    yaml = {
+      schemas = {
+        -- Github actions
+        ['https://json.schemastore.org/github-workflow'] = '.github/workflows/*.{yml,yaml}',
+        ['https://json.schemastore.org/github-action'] = '.github/action.{yml,yaml}',
+
+        -- Stainless schema
+        ['./lib/config-schema.json'] = 'specs/*.stainless.yml',
+      },
+    },
+  },
+})
+
+lspconfig.jsonls.setup({
+  settings = {
+    json = {
+      schemas = {
+        {
+          description = 'TypeScript compiler configuration file',
+          fileMatch = { 'tsconfig.json', 'tsconfig.*.json' },
+          url = 'http://json.schemastore.org/tsconfig',
+        },
+        {
+          description = 'Babel configuration',
+          fileMatch = { '.babelrc.json', '.babelrc', 'babel.config.json' },
+          url = 'http://json.schemastore.org/lerna',
+        },
+        {
+          description = 'ESLint config',
+          fileMatch = { '.eslintrc.json', '.eslintrc' },
+          url = 'http://json.schemastore.org/eslintrc',
+        },
+        {
+          description = 'Prettier config',
+          fileMatch = { '.prettierrc', '.prettierrc.json', 'prettier.config.json' },
+          url = 'http://json.schemastore.org/prettierrc',
+        },
+        {
+          description = 'Vercel Now config',
+          fileMatch = { 'now.json' },
+          url = 'http://json.schemastore.org/now',
+        },
+        {
+          description = 'Stylelint config',
+          fileMatch = { '.stylelintrc', '.stylelintrc.json', 'stylelint.config.json' },
+          url = 'http://json.schemastore.org/stylelintrc',
+        },
+      },
+    },
+  },
+})

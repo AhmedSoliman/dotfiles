@@ -1,3 +1,7 @@
+-- use vim settings, rather then vi settings (much better!).
+-- this must be first, because it changes other options as a side effect.
+vim.opt.compatible = false
+
 require("plugins")
 require("asoli")
 
@@ -164,3 +168,18 @@ if vim.fn.has "nvim-0.7" then
     group = cursorLine,
   })
 end
+
+-- Sourcing overlays
+vim.cmd([[
+  " function to source a file if it exists
+  function! SourceIfExists(file)
+    if filereadable(expand(a:file))
+      exe 'source' a:file
+    endif
+  endfunction
+]])
+
+vim.cmd([[
+  " Layered Config
+  call SourceIfExists('~/.config/nvim/layers/private/vimrc.vim')
+]])
