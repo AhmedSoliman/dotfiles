@@ -72,7 +72,7 @@ vim.keymap.set("x", "<leader>p", "\"_dP")
 
 
 -- LSP Format
-vim.keymap.set("n", "<C-f>", ":LspZeroFormat<CR>")
+--vim.keymap.set("n", "<C-f>", ":LspZeroFormat<CR>")
 
 -- Powerful replace selected word with <leader>x
 vim.keymap.set("n", "<leader>x", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
