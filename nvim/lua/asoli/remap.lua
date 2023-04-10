@@ -29,17 +29,18 @@ vim.keymap.set("n", "<leader>xx", ":TroubleToggle<CR>", { noremap = true })
 
 -- FZF
 vim.keymap.set('n', '<C-p>', function()
-  local utils = require('telescope.utils')
+  --local utils = require('telescope.utils')
   local fzf = require('fzf-lua')
-  local _, ret, _ = utils.get_os_command_output({ 'git', 'rev-parse', '--is-inside-work-tree' })
-  if ret == 0 then
-    fzf.git_files()
-  else
-    fzf.files()
-  end
+  --local _, ret, _ = utils.get_os_command_output({ 'git', 'rev-parse', '--is-inside-work-tree' })
+  fzf.files()
+--  if ret == 0 then
+--    fzf.git_files()
+--  else
+--    fzf.files()
+--  end
 end, { silent = true })
 vim.keymap.set('n', '<leader>a', vim.lsp.buf.code_action, {})
-vim.keymap.set('n', '<leader>r', ":FzfLua resume<CR>", { silent = true })
+-- vim.keymap.set('n', '<leader>r', ":FzfLua resume<CR>", { silent = true })
 vim.keymap.set('n', '<leader>f', ":FzfLua live_grep<CR>", { silent = true })
 vim.keymap.set('n', '<leader>F', ":FzfLua grep_visual<CR>", { silent = true })
 vim.keymap.set('n', '<C-b>', ":FzfLua buffers<CR>", { silent = true })
@@ -52,6 +53,9 @@ vim.keymap.set("n", "N", "Nzz", { noremap = true, silent = true })
 vim.keymap.set("n", "*", "*zz", { noremap = true, silent = true })
 vim.keymap.set("n", "#", "#zz", { noremap = true, silent = true })
 vim.keymap.set("n", "g*", "g*zz", { noremap = true, silent = true })
+
+-- Open Outline
+vim.keymap.set("", "<F5>", ":SymbolsOutline<CR>", { noremap = true, silent = true })
 
 -- Clear current search highlight by hitten g + /
 vim.keymap.set("n", "g/", ":nohlsearch<CR>", { remap = true, silent = true })
@@ -72,7 +76,7 @@ vim.keymap.set("x", "<leader>p", "\"_dP")
 
 
 -- LSP Format
---vim.keymap.set("n", "<C-f>", ":LspZeroFormat<CR>")
+vim.keymap.set("n", "<C-f>", ":LspZeroFormat<CR>")
 
 -- Powerful replace selected word with <leader>x
 vim.keymap.set("n", "<leader>x", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])

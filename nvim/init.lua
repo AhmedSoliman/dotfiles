@@ -1,6 +1,8 @@
 -- use vim settings, rather then vi settings (much better!).
 -- this must be first, because it changes other options as a side effect.
 vim.opt.compatible = false
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
 
 require("plugins")
 require("asoli")

@@ -24,7 +24,14 @@ return require('packer').startup(function(use)
     'rose-pine/neovim',
     as = 'rose-pine',
     config = function()
-      vim.cmd('colorscheme rose-pine')
+      -- vim.cmd('colorscheme rose-pine')
+    end
+  })
+  use({
+    'cocopon/iceberg.vim',
+    as = 'iceberg',
+    config = function()
+      vim.cmd('colorscheme iceberg')
     end
   })
   -- show changed line marks in gutter
@@ -101,6 +108,9 @@ return require('packer').startup(function(use)
   }
   use 'nvim-treesitter/nvim-treesitter-context'
   use 'nvim-treesitter/playground'
+  -- UI (Outline)
+  use 'simrat39/symbols-outline.nvim'
+
 
   -- LSP Zero
   use {
@@ -135,18 +145,24 @@ return require('packer').startup(function(use)
     },
   })
 
+  use({ 'onsails/lspkind.nvim' })
+
+
   -- Diagnostics
   use {
     "folke/trouble.nvim",
     requires = "kyazdani42/nvim-web-devicons",
     config = function()
       require("trouble").setup {
+
         -- your configuration comes here
         -- or leave it empty to use the default settings
         -- refer to the configuration section below
       }
     end
   }
+  -- Lint
+  use 'mfussenegger/nvim-lint'
   -- Replace missing colors for LSP
   use('folke/lsp-colors.nvim')
   -- LSP Status
@@ -164,9 +180,25 @@ return require('packer').startup(function(use)
     -- Uncomment next line if you want to follow only stable versions
     -- tag = "*"
   }
+  use {
+    'numToStr/Comment.nvim',
+    config = function()
+      require('Comment').setup()
+    end
+  }
 
   -- Rust tools
   use 'simrat39/rust-tools.nvim'
+
+  -- Crates
+  use {
+    'saecki/crates.nvim',
+    tag = 'v0.3.0',
+    requires = { 'nvim-lua/plenary.nvim' },
+    config = function()
+      require('crates').setup()
+    end,
+  }
   -- for debugging
   use 'mfussenegger/nvim-dap'
   -- Load on a combination of conditions: specific filetypes or commands
@@ -183,7 +215,7 @@ return require('packer').startup(function(use)
   use 'tpope/vim-rhubarb'
 
   use 'tpope/vim-endwise'
-  use 'rstacruz/vim-closer'
+  --use 'rstacruz/vim-closer'
 
   use {
     'ibhagwan/fzf-lua',
@@ -194,5 +226,27 @@ return require('packer').startup(function(use)
   if utils.isModuleAvailable('overlay.plugins') then
     require('overlay.plugins').install_plugins(use)
   end
+
+  -- Github Copilot
+  --use 'github/copilot.vim'
+  use {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    config = function()
+      require("copilot").setup({
+        suggestion = { enabled = false },
+        panel = { enabled = false },
+      })
+    end,
+  }
+
+  use {
+    "zbirenbaum/copilot-cmp",
+    after = { "copilot.lua" },
+    config = function()
+      require("copilot_cmp").setup()
+    end
+  }
 
 end)
