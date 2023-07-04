@@ -124,9 +124,7 @@ vim.opt.foldlevelstart = 999
 vim.opt.foldcolumn = "0"
 vim.opt.foldnestmax = 3
 vim.opt.foldmethod = "expr"
-vim.cmd([[
- set foldexpr=nvim_treesitter#foldexpr()
-]])
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 
 if vim.fn.has "nvim-0.7" then
   -- highlights yanked text for a little extra visual feedback

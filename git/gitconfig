@@ -2,15 +2,16 @@
 [user]
 name = Ahmed Farghal
 email = me@asoli.dev
-	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDrzewUdBU6iVAiCu4z2TDSfKpSVaJW6DbfGHekF72I+
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDrzewUdBU6iVAiCu4z2TDSfKpSVaJW6DbfGHekF72I+
 [gpg]
-	format = ssh
+  format = ssh
 [gpg "ssh"]
-	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+  program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
 [commit]
-	gpgsign = true
+  gpgsign = true
 [core]
-	editor = nvim
+  editor = nvim
 [alias]
-	smartlog = log --graph --pretty=format:'commit: %C(bold red)%h%Creset %C(red)<%H>%Creset %C(bold magenta)%d %Creset%ndate: %C(bold yellow)%cd %Creset%C(yellow)%cr%Creset%nauthor: %C(bold blue)%an%Creset %C(blue)<%ae>%Creset%n%C(cyan)%s%n%Creset'
-	sl = !git smartlog
+  smartlog = log --graph --pretty=format:'commit: %C(bold red)%h%Creset %C(red)<%H>%Creset %C(bold magenta)%d %Creset%ndate: %C(bold yellow)%cd %Creset%C(yellow)%cr%Creset%nauthor: %C(bold blue)%an%Creset %C(blue)<%ae>%Creset%n%C(cyan)%s%n%Creset'
+  sl = !git smartlog
+  cleanup = "!git branch --merged | grep  -v '\\*\\|master\\|develop' | xargs -n 1 -r git branch -d"

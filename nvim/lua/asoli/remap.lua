@@ -26,6 +26,8 @@ vim.keymap.set("n", "<leader><leader>", "<c-^>", { noremap = true })
 
 -- Diagnostics drawer
 vim.keymap.set("n", "<leader>xx", ":TroubleToggle<CR>", { noremap = true })
+-- Show floating diagnostics on g?
+vim.keymap.set('n', 'g?', vim.diagnostic.open_float, { noremap = true })
 
 -- FZF
 vim.keymap.set('n', '<C-p>', function()
@@ -40,8 +42,8 @@ vim.keymap.set('n', '<C-p>', function()
 --  end
 end, { silent = true })
 vim.keymap.set('n', '<leader>a', vim.lsp.buf.code_action, {})
--- vim.keymap.set('n', '<leader>r', ":FzfLua resume<CR>", { silent = true })
-vim.keymap.set('n', '<leader>f', ":FzfLua live_grep<CR>", { silent = true })
+vim.keymap.set('n', '<leader>r', ":FzfLua resume<CR>", { silent = true })
+vim.keymap.set('n', '<leader>f', ":FzfLua live_grep_native<CR>", { silent = true })
 vim.keymap.set('n', '<leader>F', ":FzfLua grep_visual<CR>", { silent = true })
 vim.keymap.set('n', '<C-b>', ":FzfLua buffers<CR>", { silent = true })
 --vim.keymap.set('n', '<leader>s', builtin.lsp_workspace_symbols, {})

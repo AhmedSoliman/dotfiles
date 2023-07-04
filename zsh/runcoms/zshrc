@@ -16,7 +16,7 @@ fpath=(/usr/local/share/zsh-completions $fpath)
 
 source "$HOME/.config/base16-shell/base16-shell.plugin.zsh"
 
-export FZF_DEFAULT_COMMAND='fd --type f'
+export FZF_DEFAULT_COMMAND='fd --type f --ignore-file .gitignore'
 
 # No lag after we hit esc
 export KEYTIMEOUT=1
@@ -29,7 +29,7 @@ bindkey '^w' backward-kill-word
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 # Custom unix utilities
-alias rg="rg --iglob='!tags'"
+alias rg="rg --ignore-file .gitignore --iglob='!tags'"
 alias ls='exa'
 alias ll='exa -l --icons --git'
 alias lt='exa -l --icons --git --tree'

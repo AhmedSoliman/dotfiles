@@ -35,7 +35,7 @@ return require('packer').startup(function(use)
     end
   })
   -- show changed line marks in gutter
-  use('airblade/vim-gitgutter')
+  use { 'airblade/vim-gitgutter', branch = "main" }
   -- Icons
   use 'nvim-tree/nvim-web-devicons'
 
@@ -44,7 +44,7 @@ return require('packer').startup(function(use)
     requires = {
       'nvim-tree/nvim-web-devicons', -- optional, for file icons
     },
-    tag = 'nightly' -- optional, updated every week. (see issue #1193)
+    tag = 'nightly'                  -- optional, updated every week. (see issue #1193)
   }
 
   -- Status Line
@@ -55,23 +55,22 @@ return require('packer').startup(function(use)
 
   -- **** Navigation ****
   -- Telescope | Fuzzy finder
-  use {
-    'nvim-telescope/telescope-fzf-native.nvim',
-    run = 'make',
-  }
+--  use {
+--    'nvim-telescope/telescope-fzf-native.nvim',
+--    run = 'make',
+--  }
 
   use {
     'nvim-telescope/telescope.nvim', tag = '0.1.0',
     -- or                            , branch = '0.1.x',
     requires = {
       { 'nvim-lua/plenary.nvim' },
-      { 'nvim-telescope/telescope-fzf-native.nvim' },
+--      { 'nvim-telescope/telescope-fzf-native.nvim' },
     }
   }
   -- For code actions
   use { 'nvim-telescope/telescope-ui-select.nvim' }
   use { 'alexghergh/nvim-tmux-navigation', config = function()
-
     local nvim_tmux_nav = require('nvim-tmux-navigation')
 
     nvim_tmux_nav.setup {
@@ -84,7 +83,6 @@ return require('packer').startup(function(use)
     vim.keymap.set('n', "<C-l>", nvim_tmux_nav.NvimTmuxNavigateRight)
     vim.keymap.set('n', "<C-\\>", nvim_tmux_nav.NvimTmuxNavigateLastActive)
     vim.keymap.set('n', "<C-Space>", nvim_tmux_nav.NvimTmuxNavigateNext)
-
   end
   }
 
@@ -154,6 +152,7 @@ return require('packer').startup(function(use)
     requires = "kyazdani42/nvim-web-devicons",
     config = function()
       require("trouble").setup {
+        use_diagnostic_signs = true,
 
         -- your configuration comes here
         -- or leave it empty to use the default settings
@@ -166,9 +165,11 @@ return require('packer').startup(function(use)
   -- Replace missing colors for LSP
   use('folke/lsp-colors.nvim')
   -- LSP Status
-  use { 'j-hui/fidget.nvim', config = function()
-    require('fidget').setup {}
-  end
+  use { 'j-hui/fidget.nvim',
+    tag = "legacy",
+    config = function()
+      require('fidget').setup {}
+    end
   }
   -- Comments
   use {
@@ -248,5 +249,4 @@ return require('packer').startup(function(use)
       require("copilot_cmp").setup()
     end
   }
-
 end)
