@@ -19,21 +19,9 @@ return require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
 
   -- **** Styling ****
-  -- Rose-pine ColorScheme
-  use({
-    'rose-pine/neovim',
-    as = 'rose-pine',
-    config = function()
-      -- vim.cmd('colorscheme rose-pine')
-    end
-  })
-  use({
-    'cocopon/iceberg.vim',
-    as = 'iceberg',
-    config = function()
-      vim.cmd('colorscheme iceberg')
-    end
-  })
+  -- Base16 Themes
+  use 'tinted-theming/base16-vim'
+
   -- show changed line marks in gutter
   use { 'airblade/vim-gitgutter', branch = "main" }
   -- Icons

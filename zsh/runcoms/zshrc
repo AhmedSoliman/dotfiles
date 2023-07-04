@@ -35,7 +35,9 @@ alias ll='exa -l --icons --git'
 alias lt='exa -l --icons --git --tree'
 alias lll='exa -la --icons --git'
 alias vim='nvim'
-alias cat='bat'
+alias dark='base16_rose-pine-moon'
+alias bright='base16_rose-pine-dawn'
+
 
 eval $(starship init zsh)
 

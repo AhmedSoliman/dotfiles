@@ -2,7 +2,7 @@
 
 set -vx
 
-git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
+git clone  https://github.com/tinted-theming/base16-shell.git ~/.config/base16-shell
 
 git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
 
@@ -17,4 +17,4 @@ done
 chsh -s /bin/zsh
 
 # Set theme
-# base16_atelier-cave
+base16_rose-pine-moon

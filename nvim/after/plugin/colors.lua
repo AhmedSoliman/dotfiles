@@ -1,22 +1,17 @@
-require('rose-pine').setup({
-  -- disable_background = true,
-  variant = "auto",
-  dark_variant = "main",
-  --dark_variant = "dawn",
-  disable_float_background = false,
-  disable_background = false,
-  dim_nc_background = true,
-  bold_vert_split = true,
-})
+local g = vim.g
+local cmd = vim.cmd
+local fn = vim.fn
+local set_theme_path = "$HOME/.config/tinted-theming/set_theme.lua"
+local is_set_theme_file_readable = fn.filereadable(fn.expand(set_theme_path)) == 1 and true or false
 
-function ColorMyPencils(color)
-  color = color or "rose-pine"
-  --color = color or "iceberg"
-  vim.cmd.colorscheme(color)
-
---  vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
---  vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
---
+local current_theme_name = os.getenv('BASE16_THEME')
+if current_theme_name and g.colors_name ~= 'base16-' .. current_theme_name then
+  cmd('colorscheme base16-' .. current_theme_name)
 end
 
-ColorMyPencils()
+if is_set_theme_file_readable then
+  cmd("source " .. set_theme_path)
+end
+
+-- Ensures that lualine is happy.
+g.colors_name = current_theme_name

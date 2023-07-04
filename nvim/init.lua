@@ -50,6 +50,8 @@ vim.opt.splitbelow = true
 vim.opt.backupdir = { HOME .. "/.vim-tmp", HOME .. "./tmp", HOME .. "/tmp" }
 vim.opt.directory = { HOME .. "/.vim-tmp", HOME .. "./tmp", HOME .. "/tmp" }
 vim.opt.termguicolors = true
+-- Access colors present in 256 colorspace
+vim.g.base16_colorspace = 256
 
 vim.g.secure_modelines_allowed_items = {
   "textwidth", "tw",
