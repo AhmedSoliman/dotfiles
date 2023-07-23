@@ -14,7 +14,7 @@ require('fzf-lua').setup({
       ['ctrl-t'] = actions.file_tabedit,
       ['alt-q'] = actions.file_sel_to_qf,
     },
-    fd_opts = "--color=never --ignore-file .gitignore --type f --hidden --follow --exclude .git --exclude .sl --exclude node_modules",
+    -- fd_opts = "--color=never --ignore-file .gitignore --type f --hidden --follow --exclude .git --exclude .sl --exclude node_modules",
     --    file_icons = false,
     --    git_icons = false,
   },
@@ -24,8 +24,8 @@ require('fzf-lua').setup({
   --  },
   grep = {
     rg_glob = true,
-    rg_opts = "--ignore-file=.gitignore --hidden --column --line-number --no-heading " ..
-              "--color=always --smart-case -g '!{.git,node_modules,.sl}/*'",
+--    rg_opts = "--ignore-file=.gitignore --hidden --column --line-number --no-heading " ..
+--              "--color=always --smart-case -g '!{.git,node_modules,.sl}/*'",
 --    file_icons = false,
 --    git_icons = false,
   },

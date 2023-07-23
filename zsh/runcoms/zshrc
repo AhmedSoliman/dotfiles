@@ -14,9 +14,16 @@ fi
 fpath=(~/.zfunc $fpath)
 fpath=(/usr/local/share/zsh-completions $fpath)
 
-source "$HOME/.config/base16-shell/base16-shell.plugin.zsh"
+# Homebrew completions
+if type brew &>/dev/null
+then
+  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
 
-export FZF_DEFAULT_COMMAND='fd --type f --ignore-file .gitignore'
+  autoload -Uz compinit
+  compinit
+fi
+
+source "$HOME/.config/base16-shell/base16-shell.plugin.zsh"
 
 # No lag after we hit esc
 export KEYTIMEOUT=1
@@ -28,8 +35,8 @@ bindkey '^w' backward-kill-word
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
+
 # Custom unix utilities
-alias rg="rg --ignore-file .gitignore --iglob='!tags'"
 alias ls='exa'
 alias ll='exa -l --icons --git'
 alias lt='exa -l --icons --git --tree'
@@ -39,6 +46,12 @@ alias dark='base16_rose-pine-moon'
 alias bright='base16_rose-pine-dawn'
 
 
-eval $(starship init zsh)
+if type starship &>/dev/null
+then
+  eval $(starship init zsh)
+fi
+
+
+export EDITOR=nvim
 
 [ -f ~/.asoli_custom.zshrc ] && source ~/.asoli_custom.zshrc

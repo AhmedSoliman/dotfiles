@@ -6,3 +6,7 @@ cargo-tree
 cargo-bloat
 cargo-outdated
 proximity-sort
+cargo-deny
+cargo-license
+cargo-workspaces
+

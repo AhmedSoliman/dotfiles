@@ -28,11 +28,12 @@ return require('packer').startup(function(use)
   use 'nvim-tree/nvim-web-devicons'
 
   use {
-    'nvim-tree/nvim-tree.lua',
+    -- 'nvim-tree/nvim-tree.lua',
+    'AhmedSoliman/nvim-tree.lua',
     requires = {
       'nvim-tree/nvim-web-devicons', -- optional, for file icons
     },
-    tag = 'nightly'                  -- optional, updated every week. (see issue #1193)
+    branch = 'AhmedSoliman/sapling-scm'
   }
 
   -- Status Line
@@ -43,17 +44,17 @@ return require('packer').startup(function(use)
 
   -- **** Navigation ****
   -- Telescope | Fuzzy finder
---  use {
---    'nvim-telescope/telescope-fzf-native.nvim',
---    run = 'make',
---  }
+  --  use {
+  --    'nvim-telescope/telescope-fzf-native.nvim',
+  --    run = 'make',
+  --  }
 
   use {
     'nvim-telescope/telescope.nvim', tag = '0.1.0',
     -- or                            , branch = '0.1.x',
     requires = {
       { 'nvim-lua/plenary.nvim' },
---      { 'nvim-telescope/telescope-fzf-native.nvim' },
+      --      { 'nvim-telescope/telescope-fzf-native.nvim' },
     }
   }
   -- For code actions
@@ -210,6 +211,10 @@ return require('packer').startup(function(use)
     'ibhagwan/fzf-lua',
     branch = 'main',
   }
+
+
+  -- Tailwind + TypeScript
+  use 'princejoogie/tailwind-highlight.nvim'
 
   local utils = require('utils')
   if utils.isModuleAvailable('overlay.plugins') then

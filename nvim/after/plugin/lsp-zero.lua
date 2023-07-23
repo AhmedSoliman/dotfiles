@@ -148,6 +148,20 @@ require('lspconfig').jsonls.setup({
 })
 
 
+-- Tailwind color highlight
+local tw_highlight = require('tailwind-highlight')
+
+require('lspconfig').tailwindcss.setup({
+  on_attach = function(client, bufnr)
+    -- rest of you config
+    tw_highlight.setup(client, bufnr, {
+      single_column = false,
+      mode = 'background',
+      debounce = 200,
+    })
+  end
+})
+
 local has_words_before = function()
   if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then return false end
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
