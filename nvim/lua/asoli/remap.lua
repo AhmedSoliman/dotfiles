@@ -1,4 +1,5 @@
-vim.g.mapleader = " "
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
 -- " Disable Ex mode
 vim.keymap.set("n", "Q", "<NOP>", { noremap = true }) -- Use karabiner to fix C-i and Tab problem
 

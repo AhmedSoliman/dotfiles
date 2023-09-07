@@ -18,6 +18,9 @@ return require('packer').startup(function(use)
   -- Packer can manage itself
   use 'wbthomason/packer.nvim'
 
+  -- Detect tabstop and shiftwidth automatically
+  use 'tpope/vim-sleuth'
+
   -- **** Styling ****
   -- Base16 Themes
   use 'tinted-theming/base16-vim'
@@ -44,17 +47,17 @@ return require('packer').startup(function(use)
 
   -- **** Navigation ****
   -- Telescope | Fuzzy finder
-  --  use {
-  --    'nvim-telescope/telescope-fzf-native.nvim',
-  --    run = 'make',
-  --  }
+  use {
+    'nvim-telescope/telescope-fzf-native.nvim',
+    run = 'make',
+  }
 
   use {
     'nvim-telescope/telescope.nvim', tag = '0.1.0',
     -- or                            , branch = '0.1.x',
     requires = {
       { 'nvim-lua/plenary.nvim' },
-      --      { 'nvim-telescope/telescope-fzf-native.nvim' },
+      { 'nvim-telescope/telescope-fzf-native.nvim' },
     }
   }
   -- For code actions
@@ -91,6 +94,7 @@ return require('packer').startup(function(use)
       'p00f/nvim-ts-rainbow',
       -- Auto close <html> tags
       'windwp/nvim-ts-autotag',
+      'nvim-treesitter/nvim-treesitter-textobjects',
     }
   }
   use 'nvim-treesitter/nvim-treesitter-context'
@@ -98,6 +102,19 @@ return require('packer').startup(function(use)
   -- UI (Outline)
   use 'simrat39/symbols-outline.nvim'
 
+  -- Useful plugin to show you pending keybinds.
+  use {
+    "folke/which-key.nvim",
+    config = function()
+      vim.o.timeout = true
+      vim.o.timeoutlen = 300
+      require("which-key").setup {
+        -- your configuration comes here
+        -- or leave it empty to use the default settings
+        -- refer to the configuration section below
+      }
+    end
+  }
 
   -- LSP Zero
   use {
@@ -120,6 +137,9 @@ return require('packer').startup(function(use)
       { 'L3MON4D3/LuaSnip' },
       -- Snippet Collection (Optional)
       { 'rafamadriz/friendly-snippets' },
+      -- Additional lua configuration, makes nvim stuff amazing!
+      { 'folke/neodev.nvim' },
+
     }
   }
 
