@@ -36,7 +36,8 @@ zstyle ':prezto:load' pmodule \
   'utility' \
   'git' \
   'completion' \
-  'prompt'
+  'prompt' \
+  'docker'
 
 
 #

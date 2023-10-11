@@ -1,32 +1,61 @@
 -- Learn the keybindings, see :help lsp-zero-keybindings
 -- Learn to configure LSP servers, see :help lsp-zero-api-showcase
 local lsp = require('lsp-zero')
---lsp.setup()
 
---lsp.preset('recommended')
-lsp.extend_lspconfig({
-  on_attach = function(client, bufnr)
-    local opts = { buffer = bufnr, remap = false }
-
-    vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
-    vim.keymap.set("n", "gy", function() vim.lsp.buf.type_definition() end, opts)
-    vim.keymap.set("n", "gi", function() vim.lsp.buf.implementation() end, opts)
-    vim.keymap.set('n', 'gr', ':FzfLua lsp_references<CR>', { buffer = bufnr, silent = true, noremap = false })
-    vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
-    vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
-    vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
-    vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
-    vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
-    vim.keymap.set("n", "<leader>a", function() vim.lsp.buf.code_action() end, opts)
-    vim.keymap.set("n", "<leader>rn", function() vim.lsp.buf.rename() end, opts)
-    vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
-    --vim.keymap.set("i", "<C-f>", function() vim.lsp.buf.format({ async = true }) end, opts)
-
-    vim.api.nvim_buf_set_option(bufnr, "formatexpr", "v:lua.vim.lsp.formatexpr()")
-    vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-    vim.api.nvim_buf_set_option(bufnr, "tagfunc", "v:lua.vim.lsp.tagfunc")
+-- lsp.extend_lspconfig({
+--   on_attach = function(client, bufnr)
+--     local opts = { buffer = bufnr, remap = false }
+--
+--     vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
+--     vim.keymap.set("n", "gy", function() vim.lsp.buf.type_definition() end, opts)
+--     vim.keymap.set("n", "gi", function() vim.lsp.buf.implementation() end, opts)
+--     vim.keymap.set('n', 'gr', ':FzfLua lsp_references<CR>', { buffer = bufnr, silent = true, noremap = false })
+--     vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
+--     vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
+--     vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
+--     vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
+--     vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
+--     vim.keymap.set("n", "<leader>a", function() vim.lsp.buf.code_action() end, opts)
+--     vim.keymap.set("n", "<leader>rn", function() vim.lsp.buf.rename() end, opts)
+--     vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
+--     --vim.keymap.set("i", "<C-f>", function() vim.lsp.buf.format({ async = true }) end, opts)
+--
+--     vim.api.nvim_buf_set_option(bufnr, "formatexpr", "v:lua.vim.lsp.formatexpr()")
+--     vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+--     vim.api.nvim_buf_set_option(bufnr, "tagfunc", "v:lua.vim.lsp.tagfunc")
+--     print("HOLY MOLY")
+--   end
+-- })
+--
+lsp.on_attach(function(client, bufnr)
+  local function opts(desc)
+    return { desc = 'LSP: ' .. desc, buffer = bufnr, remap = false }
   end
-})
+  -- Use telescope for lsp navigation
+  local builtin = require('telescope.builtin')
+  -- Uncomment to disable LSP semantic highlighting if it looks ugly!
+  --client.server_capabilities.semanticTokensProvider = nil
+  vim.keymap.set("n", "gd", function() builtin.lsp_definitions() end, opts('goto definition'))
+  vim.keymap.set("n", "gy", function() builtin.lsp_type_definitions() end, opts('goto type definition'))
+  vim.keymap.set("n", "gi", function() builtin.lsp_implementations() end, opts('goto implementation'))
+
+  vim.keymap.set('n', 'gr', function() builtin.lsp_references() end, { desc = 'LSP: find references', buffer = bufnr, silent = true, noremap = false })
+  vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts('hover over symbol under cursor'))
+  vim.keymap.set("n", "<leader>s", function() builtin.lsp_workspace_symbols() end, opts('workspace symbols'))
+  vim.keymap.set("n", "<leader>vd", function() builtin.diagnostics({bufnr = 0}) end, opts('local buffer diagnostics'))
+  vim.keymap.set("n", "<leader>vwd", function() builtin.diagnostics() end, opts('workspace diagnostics'))
+  vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts('next diagnostic'))
+  vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts('prev diagnostic'))
+  vim.keymap.set("n", "<leader>a", function() vim.lsp.buf.code_action() end, opts('code actions'))
+  vim.keymap.set("n", "<leader>rn", function() vim.lsp.buf.rename() end, opts('rename'))
+  vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts('signature help'))
+  vim.keymap.set("n", "<C-f>", function() vim.lsp.buf.format({ async = true }) end, opts('format code'))
+
+  vim.api.nvim_buf_set_option(bufnr, "formatexpr", "v:lua.vim.lsp.formatexpr()")
+  vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+  vim.api.nvim_buf_set_option(bufnr, "tagfunc", "v:lua.vim.lsp.tagfunc")
+end
+)
 
 require('mason').setup()
 require('mason-lspconfig').setup({
@@ -44,23 +73,13 @@ require('mason-lspconfig').setup_handlers({
   end,
 })
 
--- Diagnostics
-lsp.nvim_workspace()
-vim.diagnostic.config(lsp.defaults.diagnostics({
-  virtual_text = true
-}))
-
 require('lsp-zero').set_sign_icons()
-
-
---lsp.skip_server_setup({ 'rust_analyzer' })
 
 -- Fix Undefined global 'vim'
 require('luasnip').config.set_config({
   region_check_events = 'InsertEnter',
   delete_check_events = 'InsertLeave'
 })
-
 
 -- Initialize rust_analyzer with rust-tools
 local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
@@ -188,6 +207,7 @@ local cmp_config = require('lsp-zero').defaults.cmp_config({
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-b>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
   },
   sources = {
     -- Github copilot

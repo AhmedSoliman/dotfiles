@@ -31,24 +31,25 @@ vim.keymap.set("n", "<leader>xx", ":TroubleToggle<CR>", { noremap = true })
 vim.keymap.set('n', 'g?', vim.diagnostic.open_float, { noremap = true })
 
 -- FZF
-vim.keymap.set('n', '<C-p>', function()
-  --local utils = require('telescope.utils')
-  local fzf = require('fzf-lua')
-  --local _, ret, _ = utils.get_os_command_output({ 'git', 'rev-parse', '--is-inside-work-tree' })
-  fzf.files()
---  if ret == 0 then
---    fzf.git_files()
---  else
---    fzf.files()
---  end
-end, { silent = true })
-vim.keymap.set('n', '<leader>a', vim.lsp.buf.code_action, {})
-vim.keymap.set('n', '<leader>r', ":FzfLua resume<CR>", { silent = true })
+-- vim.keymap.set('n', '<C-p>', function()
+--   --local utils = require('telescope.utils')
+--   local fzf = require('fzf-lua')
+--   --local _, ret, _ = utils.get_os_command_output({ 'git', 'rev-parse', '--is-inside-work-tree' })
+--   fzf.files()
+-- --  if ret == 0 then
+-- --    fzf.git_files()
+-- --  else
+-- --    fzf.files()
+-- --  end
+-- end, { silent = true })
+
+local builtin = require('telescope.builtin')
+vim.keymap.set('n', '<C-p>', function() builtin.find_files() end, { desc = "Find files", silent = true })
+
+vim.keymap.set('n', '<leader>r', function() builtin.resume() end, { desc = "Telescope Resume", silent = true })
 vim.keymap.set('n', '<leader>f', ":FzfLua live_grep_native<CR>", { silent = true })
 vim.keymap.set('n', '<leader>F', ":FzfLua grep_visual<CR>", { silent = true })
-vim.keymap.set('n', '<C-b>', ":FzfLua buffers<CR>", { silent = true })
---vim.keymap.set('n', '<leader>s', builtin.lsp_workspace_symbols, {})
-vim.keymap.set('n', '<leader>s', ":FzfLua lsp_live_workspace_symbols<CR>", {})
+vim.keymap.set('n', '<C-b>', function() builtin.buffers() end, { desc = "Telescope buffers", silent = true })
 
 -- Search results centered please
 vim.keymap.set("n", "n", "nzz", { noremap = true, silent = true })
@@ -79,7 +80,7 @@ vim.keymap.set("x", "<leader>p", "\"_dP")
 
 
 -- LSP Format
-vim.keymap.set("n", "<C-f>", ":LspZeroFormat<CR>")
+-- vim.keymap.set("n", "<C-f>", ":LspZeroFormat<CR>")
 
 -- Powerful replace selected word with <leader>x
 vim.keymap.set("n", "<leader>x", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])

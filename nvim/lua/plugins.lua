@@ -21,6 +21,9 @@ return require('packer').startup(function(use)
   -- Detect tabstop and shiftwidth automatically
   use 'tpope/vim-sleuth'
 
+  -- better vim.notify
+  use 'rcarriga/nvim-notify'
+
   -- **** Styling ****
   -- Base16 Themes
   use 'tinted-theming/base16-vim'
@@ -52,6 +55,9 @@ return require('packer').startup(function(use)
     run = 'make',
   }
 
+  -- Telescope | DAP extension
+  use 'nvim-telescope/telescope-dap.nvim'
+
   use {
     'nvim-telescope/telescope.nvim', tag = '0.1.0',
     -- or                            , branch = '0.1.x',
@@ -60,6 +66,7 @@ return require('packer').startup(function(use)
       { 'nvim-telescope/telescope-fzf-native.nvim' },
     }
   }
+
   -- For code actions
   use { 'nvim-telescope/telescope-ui-select.nvim' }
   use { 'alexghergh/nvim-tmux-navigation', config = function()
@@ -154,6 +161,17 @@ return require('packer').startup(function(use)
 
   use({ 'onsails/lspkind.nvim' })
 
+  -- use { 'RRethy/vim-illuminate',
+  --   config = function()
+  --     require('illuminate').configure({
+  --       -- wait 500ms before highlighting
+  --       delay = 500,
+  --     })
+  --   end
+  -- }
+
+  -- Neovim setup for init.lua and plugin development with full signature help, docs and completion for the nvim lua API.
+  use 'folke/neodev.nvim'
 
   -- Diagnostics
   use {
@@ -162,10 +180,6 @@ return require('packer').startup(function(use)
     config = function()
       require("trouble").setup {
         use_diagnostic_signs = true,
-
-        -- your configuration comes here
-        -- or leave it empty to use the default settings
-        -- refer to the configuration section below
       }
     end
   }
@@ -211,6 +225,7 @@ return require('packer').startup(function(use)
   }
   -- for debugging
   use 'mfussenegger/nvim-dap'
+  use { "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap" } }
   -- Load on a combination of conditions: specific filetypes or commands
   -- Also run code after load (see the "config" key)
   use {
