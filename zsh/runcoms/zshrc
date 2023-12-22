@@ -55,3 +55,7 @@ fi
 export EDITOR=nvim
 
 [ -f ~/.asoli_custom.zshrc ] && source ~/.asoli_custom.zshrc
+
+export WASMTIME_HOME="$HOME/.wasmtime"
+
+export PATH="$WASMTIME_HOME/bin:${HOME}/.bin/:$PATH"

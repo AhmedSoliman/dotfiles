@@ -2,13 +2,8 @@
 [user]
 name = Ahmed Farghal
 email = me@asoli.dev
-  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDrzewUdBU6iVAiCu4z2TDSfKpSVaJW6DbfGHekF72I+
 [gpg]
   format = ssh
-[gpg "ssh"]
-  program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
-[commit]
-  gpgsign = true
 [core]
   editor = nvim
 [alias]

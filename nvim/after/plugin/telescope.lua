@@ -4,6 +4,7 @@ require("telescope").setup {
     require('telescope.themes').get_ivy(), -- or get_cursor, get_ivy
     {
       --- your own `default` options go here, e.g.:
+      fname_width = 100,
       path_display = {
         truncate = 2
       },
@@ -14,6 +15,37 @@ require("telescope").setup {
       }
     }
   ),
+  pickers = {
+    current_buffer_tags = { fname_width = 100, },
+
+    jumplist = { fname_width = 100, },
+
+    loclist = { fname_width = 100, },
+
+    lsp_definitions = { fname_width = 100, },
+
+    lsp_document_symbols = { fname_width = 100, },
+
+    lsp_dynamic_workspace_symbols = { fname_width = 100, },
+
+    lsp_implementations = { fname_width = 100, },
+
+    lsp_incoming_calls = { fname_width = 100, },
+
+    lsp_outgoing_calls = { fname_width = 100, },
+
+    lsp_references = { fname_width = 100, },
+
+    lsp_type_definitions = { fname_width = 100, },
+
+    lsp_workspace_symbols = { fname_width = 100, },
+
+    quickfix = { fname_width = 100, },
+
+    tags = { fname_width = 100, },
+
+
+  },
   extensions = {
     ["ui-select"] = {
       require("telescope.themes").get_dropdown {

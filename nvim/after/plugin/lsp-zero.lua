@@ -39,10 +39,11 @@ lsp.on_attach(function(client, bufnr)
   vim.keymap.set("n", "gy", function() builtin.lsp_type_definitions() end, opts('goto type definition'))
   vim.keymap.set("n", "gi", function() builtin.lsp_implementations() end, opts('goto implementation'))
 
-  vim.keymap.set('n', 'gr', function() builtin.lsp_references() end, { desc = 'LSP: find references', buffer = bufnr, silent = true, noremap = false })
+  vim.keymap.set('n', 'gr', function() builtin.lsp_references() end,
+    { desc = 'LSP: find references', buffer = bufnr, silent = true, noremap = false })
   vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts('hover over symbol under cursor'))
   vim.keymap.set("n", "<leader>s", function() builtin.lsp_workspace_symbols() end, opts('workspace symbols'))
-  vim.keymap.set("n", "<leader>vd", function() builtin.diagnostics({bufnr = 0}) end, opts('local buffer diagnostics'))
+  vim.keymap.set("n", "<leader>vd", function() builtin.diagnostics({ bufnr = 0 }) end, opts('local buffer diagnostics'))
   vim.keymap.set("n", "<leader>vwd", function() builtin.diagnostics() end, opts('workspace diagnostics'))
   vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts('next diagnostic'))
   vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts('prev diagnostic'))
@@ -166,6 +167,8 @@ require('lspconfig').jsonls.setup({
   },
 })
 
+-- Java (auto installer, includes lombok)
+require'lspconfig'.jdtls.setup{ cmd = { 'jdtls' } }
 
 -- Tailwind color highlight
 local tw_highlight = require('tailwind-highlight')
