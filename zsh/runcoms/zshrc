@@ -59,3 +59,4 @@ export EDITOR=nvim
 export WASMTIME_HOME="$HOME/.wasmtime"
 
 export PATH="$WASMTIME_HOME/bin:${HOME}/.bin/:$PATH"
+export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
