@@ -17,8 +17,8 @@ fi
 # Editors
 #
 
-export EDITOR='nvim'
-export VISUAL='nvim'
+export EDITOR='vi'
+export VISUAL='vi'
 export PAGER='less'
 
 #
@@ -47,14 +47,21 @@ path=(
   /opt/homebrew/{bin,sbin}
   /usr/local/{bin,sbin}
   ~/.cargo/bin
+  ~/.pyenv/bin
   ~/bin
+  ~/.bin
+  ~/.npm-global/bin
   $path
 )
 
-path=(
-  $(pyenv root)/shims
-  $path
-)
+if type pyenv &>/dev/null
+then
+  path=(
+    $(pyenv root)/shims
+    $path
+  )
+fi
+
 
 #
 # Less
