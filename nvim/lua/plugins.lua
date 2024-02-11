@@ -21,6 +21,9 @@ return require('packer').startup(function(use)
   -- Detect tabstop and shiftwidth automatically
   use 'tpope/vim-sleuth'
 
+  -- Make opening big files easier
+  use 'LunarVim/bigfile.nvim'
+
   -- better vim.notify
   use 'rcarriga/nvim-notify'
 
@@ -33,14 +36,21 @@ return require('packer').startup(function(use)
   -- Icons
   use 'nvim-tree/nvim-web-devicons'
 
-  use {
-    -- 'nvim-tree/nvim-tree.lua',
-    'AhmedSoliman/nvim-tree.lua',
+  -- File explorer
+  use({
+    "stevearc/oil.nvim",
     requires = {
       'nvim-tree/nvim-web-devicons', -- optional, for file icons
     },
-    branch = 'AhmedSoliman/sapling-scm'
-  }
+  })
+  -- use {
+  --   -- 'nvim-tree/nvim-tree.lua',
+  --   'AhmedSoliman/nvim-tree.lua',
+  --   requires = {
+  --     'nvim-tree/nvim-web-devicons', -- optional, for file icons
+  --   },
+  --   branch = 'AhmedSoliman/sapling-scm'
+  -- }
 
   -- Status Line
   use {
@@ -67,6 +77,21 @@ return require('packer').startup(function(use)
     }
   }
 
+  -- Save last cursor position
+  use {
+    'ethanholz/nvim-lastplace',
+  }
+  -- Folds
+  use {
+    'kevinhwang91/nvim-ufo',
+    config = function()
+      require("ufo").setup()
+    end,
+    requires = {
+      'kevinhwang91/promise-async',
+    }
+  }
+
   -- For code actions
   use { 'nvim-telescope/telescope-ui-select.nvim' }
   use { 'alexghergh/nvim-tmux-navigation', config = function()
@@ -85,7 +110,7 @@ return require('packer').startup(function(use)
   end
   }
 
-  -- **** LSP & Syntax ***
+  -- **** LSP & Syntax **
   -- Treesitter
   use {
     'nvim-treesitter/nvim-treesitter',
@@ -105,7 +130,10 @@ return require('packer').startup(function(use)
     }
   }
   use 'nvim-treesitter/nvim-treesitter-context'
-  use 'nvim-treesitter/playground'
+
+  -- Enable when needed
+  -- use 'nvim-treesitter/playground'
+  --
   -- UI (Outline)
   use 'simrat39/symbols-outline.nvim'
 
@@ -189,10 +217,7 @@ return require('packer').startup(function(use)
   use('folke/lsp-colors.nvim')
   -- LSP Status
   use { 'j-hui/fidget.nvim',
-    tag = "legacy",
-    config = function()
-      require('fidget').setup {}
-    end
+    --    tag = "v1.3.0",
   }
   -- Comments
   use {

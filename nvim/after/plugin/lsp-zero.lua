@@ -2,31 +2,6 @@
 -- Learn to configure LSP servers, see :help lsp-zero-api-showcase
 local lsp = require('lsp-zero')
 
--- lsp.extend_lspconfig({
---   on_attach = function(client, bufnr)
---     local opts = { buffer = bufnr, remap = false }
---
---     vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
---     vim.keymap.set("n", "gy", function() vim.lsp.buf.type_definition() end, opts)
---     vim.keymap.set("n", "gi", function() vim.lsp.buf.implementation() end, opts)
---     vim.keymap.set('n', 'gr', ':FzfLua lsp_references<CR>', { buffer = bufnr, silent = true, noremap = false })
---     vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
---     vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
---     vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
---     vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
---     vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
---     vim.keymap.set("n", "<leader>a", function() vim.lsp.buf.code_action() end, opts)
---     vim.keymap.set("n", "<leader>rn", function() vim.lsp.buf.rename() end, opts)
---     vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
---     --vim.keymap.set("i", "<C-f>", function() vim.lsp.buf.format({ async = true }) end, opts)
---
---     vim.api.nvim_buf_set_option(bufnr, "formatexpr", "v:lua.vim.lsp.formatexpr()")
---     vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
---     vim.api.nvim_buf_set_option(bufnr, "tagfunc", "v:lua.vim.lsp.tagfunc")
---     print("HOLY MOLY")
---   end
--- })
---
 lsp.on_attach(function(client, bufnr)
   local function opts(desc)
     return { desc = 'LSP: ' .. desc, buffer = bufnr, remap = false }
@@ -58,6 +33,14 @@ lsp.on_attach(function(client, bufnr)
 end
 )
 
+lsp.set_sign_icons({
+  error = "✘",
+  warn = "▲",
+  hint = "⚑",
+  info = "»",
+})
+
+
 require('mason').setup()
 require('mason-lspconfig').setup({
   ensure_installed = {
@@ -84,6 +67,11 @@ require('luasnip').config.set_config({
 
 -- Initialize rust_analyzer with rust-tools
 local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
+
+capabilities.textDocument.foldingRange = {
+  dynamicRegistration = false,
+  lineFoldingOnly = true,
+}
 
 require('rust-tools').setup({
   tools = {
@@ -176,7 +164,7 @@ require('lspconfig').jsonls.setup({
 })
 
 -- Java (auto installer, includes lombok)
-require'lspconfig'.jdtls.setup{ cmd = { 'jdtls' } }
+require 'lspconfig'.jdtls.setup { cmd = { 'jdtls' } }
 
 -- Tailwind color highlight
 local tw_highlight = require('tailwind-highlight')

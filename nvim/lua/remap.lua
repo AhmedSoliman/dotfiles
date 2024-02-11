@@ -11,7 +11,6 @@ vim.keymap.set("", "<Down>", "<NOP>", { noremap = true })
 vim.keymap.set("", "<Left>", "<NOP>", { noremap = true })
 vim.keymap.set("", "<Right>", "<NOP>", { noremap = true })
 
-vim.keymap.set("n", "<leader>m", ":NvimTreeFindFile<CR>")
 vim.keymap.set("n", "<leader>q", ":qa<CR>")
 -- Better j, k, Move by line
 vim.keymap.set("n", "j", "gj", { noremap = true })
@@ -84,3 +83,6 @@ vim.keymap.set("x", "<leader>p", "\"_dP")
 
 -- Powerful replace selected word with <leader>x
 vim.keymap.set("n", "<leader>x", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+-- Oil
+vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+vim.keymap.set("n", "<leader>m", ":Oil<CR>", { desc = "Open current directory and highlight this file"} )
