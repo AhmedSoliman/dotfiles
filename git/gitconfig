@@ -2,23 +2,48 @@
 [user]
 name = Ahmed Farghal
 email = me@asoli.dev
+
 [gpg]
   format = ssh
+
 [core]
   editor = nvim
+
+[pull]
+  rebase = true
+
 [alias]
   smartlog = log --graph --pretty=format:'commit: %C(bold red)%h%Creset %C(red)<%H>%Creset %C(bold magenta)%d %Creset%ndate: %C(bold yellow)%cd %Creset%C(yellow)%cr%Creset%nauthor: %C(bold blue)%an%Creset %C(blue)<%ae>%Creset%n%C(cyan)%s%n%Creset'
   sl = !git smartlog
   cleanup = "!git branch --merged | grep  -v '\\*\\|master\\|develop' | xargs -n 1 -r git branch -d"
-  lg = log --oneline
+  lg = lg1
   parent = log -1 HEAD
+  ls = log --pretty=format:"%C(green)%h\\ %C(yellow)[%ad]%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=relative
+  amend = commit --amend
+  st = status -s
+
+  lg1 = lg1-specific --all
+  lg2 = lg2-specific --all
+  lg3 = lg3-specific --all
+
+  lg1-specific = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)'
+  lg2-specific = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'
+  lg3-specific = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset) %C(bold cyan)(committed: %cD)%C(reset) %C(auto)%d%C(reset)%n''          %C(white)%s%C(reset)%n''          %C(dim white)- %an <%ae> %C(reset) %C(dim white)(committer: %cn <%ce>)%C(reset)'
+    #http://stackoverflow.com/questions/8483041/git-color-words-excluding
+  dw = diff --color-words='\\w+|[^[:space:]]'
+  dcw = diff --cached --color-words='\\w+|[^[:space:]]'
+
 [ui "color"]
   ui = always
+
 [color]
   ui = true
+
 [merge]
   tool = nvim -d
+
 [github]
   user = AhmedSoliman
+
 [init]
   defaultBranch = main
