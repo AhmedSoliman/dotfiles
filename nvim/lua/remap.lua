@@ -84,5 +84,5 @@ vim.keymap.set("x", "<leader>p", "\"_dP")
 -- Powerful replace selected word with <leader>x
 vim.keymap.set("n", "<leader>x", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 -- Oil
-vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
-vim.keymap.set("n", "<leader>m", ":Oil<CR>", { desc = "Open current directory and highlight this file"} )
+vim.keymap.set("n", "-", "<CMD>Oil --float<CR>", { desc = "Open parent directory" })
+vim.keymap.set("n", "<leader>m", ":Oil --float<CR>", { desc = "Open current directory and highlight this file"} )

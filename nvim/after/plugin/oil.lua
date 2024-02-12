@@ -8,9 +8,13 @@ require("oil").setup({
     --"size",
     --"mtime",
   },
+  float = {
+    max_width = 80,
+    max_height = 60,
+  },
   keymaps = {
-    ["<C-s>"] = "actions.select_vsplit",
-    ["<C-v>"] = "actions.select_split",
+    ["<C-v>"] = "actions.select_vsplit",
+    ["<C-s>"] = "actions.select_split",
     ["q"] = "actions.close",
     ["p"] = "actions.parent",
     ["-"] = "actions.open_cwd",
