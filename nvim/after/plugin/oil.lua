@@ -16,7 +16,6 @@ require("oil").setup({
     ["<C-v>"] = "actions.select_vsplit",
     ["<C-s>"] = "actions.select_split",
     ["q"] = "actions.close",
-    ["p"] = "actions.parent",
     ["-"] = "actions.open_cwd",
     ["_"] = "actions.parent",
     ["<C-p>"] = false,
