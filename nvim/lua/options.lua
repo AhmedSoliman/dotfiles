@@ -1,5 +1,6 @@
 HOME = os.getenv("HOME")
 
+vim.cmd('source $VIMRUNTIME/colors/vim.lua')
 -- ===============
 -- EDITOR SETTINGS
 -- ===============

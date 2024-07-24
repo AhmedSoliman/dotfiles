@@ -36,6 +36,7 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 # Custom unix utilities
 if type exa &> /dev/null
 then
+  alias hg='sl'
   alias ls='exa'
   alias ll='exa -l --icons --git'
   alias lt='exa -l --icons --git --tree'

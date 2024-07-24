@@ -30,6 +30,7 @@ return require('packer').startup(function(use)
   -- **** Styling ****
   -- Base16 Themes
   use 'tinted-theming/base16-vim'
+  use 'rose-pine/neovim'
 
   -- show changed line marks in gutter
   use { 'airblade/vim-gitgutter', branch = "main" }
@@ -69,7 +70,7 @@ return require('packer').startup(function(use)
   use 'nvim-telescope/telescope-dap.nvim'
 
   use {
-    'nvim-telescope/telescope.nvim', tag = '0.1.4',
+    'nvim-telescope/telescope.nvim', tag = '0.1.8',
     -- or                            , branch = '0.1.x',
     requires = {
       { 'nvim-lua/plenary.nvim' },
@@ -242,7 +243,7 @@ return require('packer').startup(function(use)
   -- Crates
   use {
     'saecki/crates.nvim',
-    tag = 'v0.3.0',
+    tag = 'stable',
     requires = { 'nvim-lua/plenary.nvim' },
     config = function()
       require('crates').setup()
