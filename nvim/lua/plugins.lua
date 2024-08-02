@@ -30,7 +30,6 @@ return require('packer').startup(function(use)
   -- **** Styling ****
   -- Base16 Themes
   use 'tinted-theming/base16-vim'
-  use 'rose-pine/neovim'
 
   -- show changed line marks in gutter
   use { 'airblade/vim-gitgutter', branch = "main" }
