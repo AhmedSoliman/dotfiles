@@ -44,10 +44,6 @@ lsp.set_sign_icons({
 require('mason').setup()
 require('mason-lspconfig').setup({
   ensure_installed = {
-    -- Replace these with the servers you want to install
-    'rust_analyzer',
-    'tsserver',
-    'eslint',
   }
 })
 

@@ -248,6 +248,10 @@ return require('packer').startup(function(use)
       require('crates').setup()
     end,
   }
+
+  -- Just files
+  use 'NoahTheDuke/vim-just'
+  use "IndianBoy42/tree-sitter-just"
   -- for debugging
   use 'mfussenegger/nvim-dap'
   use { "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap" } }
