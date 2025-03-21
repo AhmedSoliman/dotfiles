@@ -1,5 +1,3 @@
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
 -- " Disable Ex mode
 vim.keymap.set("n", "Q", "<NOP>", { noremap = true }) -- Use karabiner to fix C-i and Tab problem
 
@@ -24,8 +22,6 @@ vim.keymap.set("n", "<tab>", "za", { noremap = true })
 -- Toggle between the last two buffers
 vim.keymap.set("n", "<leader><leader>", "<c-^>", { noremap = true })
 
--- Diagnostics drawer
-vim.keymap.set("n", "<leader>xx", ":TroubleToggle<CR>", { noremap = true })
 -- Show floating diagnostics on g?
 vim.keymap.set('n', 'g?', vim.diagnostic.open_float, { noremap = true })
 
@@ -45,6 +41,8 @@ vim.keymap.set('n', 'g?', vim.diagnostic.open_float, { noremap = true })
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<C-p>', function() builtin.find_files() end, { desc = "Find files", silent = true })
 
+-- Diagnostics drawer
+vim.keymap.set("n", "<leader>d", builtin.diagnostics, {})
 vim.keymap.set('n', '<leader>r', function() builtin.resume() end, { desc = "Telescope Resume", silent = true })
 vim.keymap.set('n', '<leader>f', ":FzfLua live_grep_native<CR>", { silent = true })
 vim.keymap.set('n', '<leader>F', ":FzfLua grep_visual<CR>", { silent = true })

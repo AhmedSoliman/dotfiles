@@ -2,9 +2,11 @@
 [user]
 name = Ahmed Farghal
 email = me@asoli.dev
+[gpg "ssh"]
+  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
 
-[gpg]
-  format = ssh
+[commit]
+	gpgsign = false
 
 [core]
   editor = nvim
@@ -47,3 +49,5 @@ email = me@asoli.dev
 
 [init]
   defaultBranch = main
+[diff]
+	submodule = log

@@ -2,9 +2,9 @@
 require('neodev').setup()
 
 require('nvim-treesitter.configs').setup {
-  ensure_installed = { "c", "cpp", "rust", "python", "javascript", "typescript", "go", "java", "json",
-    "markdown", "toml", "html", "css", "vim", "lua" },
+  -- ensure_installed = { "c", "cpp", "rust", "python", "javascript", "typescript", "java", "json", "toml", "yaml", "html", "css", "vim", "lua" },
   auto_install = true,
+  sync_install = false,
   highlight = {
     enable = true,
     additional_vim_regex_highlighting = false,

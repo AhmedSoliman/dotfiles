@@ -20,8 +20,8 @@ vim.g.loaded_netrwPlugin = 1
 -- vim.fn for functions vim.fn.thisIsMyFunction()
 -- vim.api is collection of API functions.
 
-require("plugins")
 require("options")
+require("config.lazy")
 require("remap")
 require("neovide")
 
