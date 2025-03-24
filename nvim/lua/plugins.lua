@@ -159,6 +159,11 @@ return {
   { 'rafamadriz/friendly-snippets' },
   -- Additional lua configuration, makes nvim stuff amazing!
   { 'folke/neodev.nvim' },
+  -- inlay-hints at line end
+  {"chrisgrieser/nvim-lsp-endhints",
+    event = "LspAttach",
+    opts = {}, -- required, even if empty
+  },
 
 
   -- LSP Zero
