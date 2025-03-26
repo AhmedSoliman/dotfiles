@@ -37,10 +37,10 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 if type exa &> /dev/null
 then
   alias hg='sl'
-  alias ls='exa'
-  alias ll='exa -l --icons --git'
-  alias lt='exa -l --icons --git --tree'
-  alias lll='exa -la --icons --git'
+  alias ls='eza'
+  alias ll='eza -l --icons --git'
+  alias lt='eza -l --icons --git --tree'
+  alias lll='eza -la --icons --git'
 fi
 
 if type nvim &>/dev/null
