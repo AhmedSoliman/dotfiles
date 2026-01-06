@@ -24,6 +24,8 @@ vim.opt.showbreak = "…" -- show ellipsis at breaking
 vim.opt.linebreak = true
 vim.opt.splitright = true
 vim.opt.splitbelow = true
+-- vim.wo.spell = true
+vim.o.spelllang = "en_us"
 vim.opt.backupdir = { HOME .. "/.vim-tmp", HOME .. "./tmp", HOME .. "/tmp" }
 vim.opt.directory = { HOME .. "/.vim-tmp", HOME .. "./tmp", HOME .. "/tmp" }
 -- set termguicolors to enable highlight groups

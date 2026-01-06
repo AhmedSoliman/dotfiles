@@ -56,7 +56,8 @@ vim.keymap.set("n", "#", "#zz", { noremap = true, silent = true })
 vim.keymap.set("n", "g*", "g*zz", { noremap = true, silent = true })
 
 -- Open Outline
-vim.keymap.set("", "<F5>", ":SymbolsOutline<CR>", { noremap = true, silent = true })
+-- Outline is mapped in lazy configuration of the outline plugin itself
+-- vim.keymap.set("", "<F5>", ":SymbolsOutline<CR>", { noremap = true, silent = true })
 
 -- Clear current search highlight by hitten g + /
 vim.keymap.set("n", "g/", ":nohlsearch<CR>", { remap = true, silent = true })

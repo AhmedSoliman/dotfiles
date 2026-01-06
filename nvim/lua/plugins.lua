@@ -18,6 +18,7 @@ return {
   { 'airblade/vim-gitgutter',     branch = "main" },
   -- Icons
   { 'nvim-tree/nvim-web-devicons' },
+  { 'echasnovski/mini.nvim',      version = false },
 
   -- File explorer
   {
@@ -121,13 +122,71 @@ return {
     -- end,
     lazy = false,
   },
-  'nvim-treesitter/nvim-treesitter-context',
+  {
+    'nvim-treesitter/nvim-treesitter-context',
+    config = function()
+      require("treesitter-context").setup {
+        enable = true,        -- Enable this plugin (Can be enabled/disabled later via commands)
+        max_lines = 1,        -- How many lines the window should span. Values <= 0 mean no limit.
+        multiline_threshold = 2,
+        trim_scope = 'outer', -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
+        patterns = {          -- Match patterns for TS nodes. These get wrapped to match at word boundaries.
+          -- For all filetypes
+          -- Note that setting an entry here replaces all other patterns for this entry.
+          -- By setting the 'default' entry below, you can control which nodes you want to
+          -- appear in the context window.
+          default = {
+            'class',
+            'function',
+            'method',
+            -- 'for', -- These won't appear in the context
+            -- 'while',
+            -- 'if',
+            -- 'switch',
+            -- 'case',
+          },
+          -- Example for a specific filetype.
+          -- If a pattern is missing, *open a PR* so everyone can benefit.
+          --   rust = {
+          --       'impl_item',
+          --   },
+        },
+        exact_patterns = {
+          -- Example for a specific filetype with Lua patterns
+          -- Treat patterns.rust as a Lua pattern (i.e "^impl_item$" will
+          -- exactly match "impl_item" only)
+          -- rust = true,
+        },
+
+        -- [!] The options below are exposed but shouldn't require your attention,
+        --     you can safely ignore them.
+
+        zindex = 20,     -- The Z-index of the context window
+        mode = 'cursor', -- Line used to calculate context. Choices: 'cursor', 'topline'
+        separator = '-', -- Separator between context and content. Should be a single character string, like '-'.
+      }
+    end,
+    lazy = false,
+  },
 
   -- Enable when needed
   -- use 'nvim-treesitter/playground'
   --
   -- UI (Outline)
-  'simrat39/symbols-outline.nvim',
+  -- 'simrat39/symbols-outline.nvim', -- deprecated
+  {
+    'hedyhli/outline.nvim',
+    lazy = true,
+    cmd = { "Outline", "OutlineOpen" },
+    keys = {
+      -- Example mapping to toggle outline
+      { "<F5>", "<cmd>Outline<CR>", desc = "Toggle outline" },
+    },
+    opts = {
+      -- Your setup opts here
+    },
+
+  },
 
   -- Useful plugin to show you pending keybinds.
   {
@@ -143,9 +202,19 @@ return {
     end
   },
   --     -- LSP Support
-  { 'neovim/nvim-lspconfig' },
-  { 'williamboman/mason.nvim' },
-  { 'williamboman/mason-lspconfig.nvim' },
+  -- { 'neovim/nvim-lspconfig' },
+  -- { 'mason-org/mason.nvim' },
+  {
+    'mason-org/mason-lspconfig.nvim',
+    opts = {
+      ensure_installed = {
+        "lua_ls",
+      },
+    },
+    dependencies = {
+      { "mason-org/mason.nvim", opts = {} },
+      'neovim/nvim-lspconfig' },
+  },
   --     -- Autocompletion
   { 'hrsh7th/nvim-cmp' },
   { 'hrsh7th/cmp-buffer' },
@@ -160,7 +229,8 @@ return {
   -- Additional lua configuration, makes nvim stuff amazing!
   { 'folke/neodev.nvim' },
   -- inlay-hints at line end
-  {"chrisgrieser/nvim-lsp-endhints",
+  {
+    "chrisgrieser/nvim-lsp-endhints",
     event = "LspAttach",
     opts = {}, -- required, even if empty
   },
@@ -255,7 +325,7 @@ return {
   --  use 'simrat39/rust-tools.nvim'
   {
     'mrcjkb/rustaceanvim',
-    version = '^5',
+    version = '^6',
     init = function()
       vim.g.rustaceanvim = {
         -- Plugin configuration
@@ -271,7 +341,7 @@ return {
             -- rust-analyzer language server configuration
             ["rust-analyzer"] = {
               rustfmt = {
-                extraArgs = { "+nightly" },
+                --extraArgs = { "+nightly" },
               },
               assist = {
                 importGranularity = "module",
@@ -362,27 +432,74 @@ return {
   },
   --   -- Tailwind + TypeScript
   'princejoogie/tailwind-highlight.nvim',
-  -- Github Copilot
-  'github/copilot.vim',
   {
-    "zbirenbaum/copilot.lua",
-    cmd = "Copilot",
-    event = "InsertEnter",
+    "pmizio/typescript-tools.nvim",
+    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+    opts = {
+      on_attach = function(client)
+        -- Formatting is handled by none-ls
+        client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.documentRangeFormattingProvider = false
+      end,
+      settings = {
+        tsserver_file_preferences = {
+          -- includeInlayParameterNameHints = "all",
+          -- includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+          -- includeInlayFunctionParameterTypeHints = true,
+          -- includeInlayVariableTypeHints = true,
+          -- includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+          -- includeInlayPropertyDeclarationTypeHints = true,
+          -- includeInlayFunctionLikeReturnTypeHints = true,
+          -- includeInlayEnumMemberValueHints = true,
+        },
+      },
+    },
+  },
+
+  -- Supermaven AI completion
+  {
+    "supermaven-inc/supermaven-nvim",
     config = function()
-      require("copilot").setup({
-        suggestion = { enabled = false },
-        panel = { enabled = false },
+      require("supermaven-nvim").setup({
+        -- keymaps = {
+        --   accept_suggestion = "<Tab>",
+        --   clear_suggestion = "<C-]>",
+        --   accept_word = "<C-j>",
+        -- },
+        -- ignore_filetypes = { cpp = true }, -- or { "cpp", }
+        -- color = {
+        --   suggestion_color = "#ffffff",
+        --   cterm = 244,
+        -- },
+        log_level = "off",                 -- set to "off" to disable logging completely
+        disable_inline_completion = false, -- disables inline completion for use with cmp
+        disable_keymaps = false,           -- disables built in keymaps for more manual control
+        condition = function()
+          return false
+        end -- condition to check for stopping supermaven, `true` means to stop supermaven when the condition is true.
       })
     end,
   },
-
-  {
-    "zbirenbaum/copilot-cmp",
-    after = { "copilot.lua" },
-    config = function()
-      require("copilot_cmp").setup()
-    end
-  },
+  -- Github Copilot
+  -- 'github/copilot.vim',
+  -- {
+  --   "zbirenbaum/copilot.lua",
+  --   cmd = "Copilot",
+  --   event = "InsertEnter",
+  --   config = function()
+  --     require("copilot").setup({
+  --       suggestion = { enabled = false },
+  --       panel = { enabled = false },
+  --     })
+  --   end,
+  -- },
+  --
+  -- {
+  --   "zbirenbaum/copilot-cmp",
+  --   config = function()
+  --     require("copilot_cmp").setup()
+  --   end
+  -- },
 }
 
 

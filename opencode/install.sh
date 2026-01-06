@@ -1,0 +1,5 @@
+#!/bin/bash
+
+
+mkdir -p ~/.config/opencode
+ln -s ~/.dotfiles/opencode/AGENTS.md ~/.config/opencode/AGENTS.md

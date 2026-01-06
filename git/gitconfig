@@ -5,9 +5,20 @@ email = me@asoli.dev
 
 [core]
   editor = nvim
+  pager = delta
+
+[delta]
+  navigate = true
+  side-by-side = true
+  line-numbers = true
 
 [pull]
   rebase = true
+
+[interactive]
+  diffFilter = delta --color-only
+
+
 
 [alias]
   smartlog = log --graph --pretty=format:'commit: %C(bold red)%h%Creset %C(red)<%H>%Creset %C(bold magenta)%d %Creset%ndate: %C(bold yellow)%cd %Creset%C(yellow)%cr%Creset%nauthor: %C(bold blue)%an%Creset %C(blue)<%ae>%Creset%n%C(cyan)%s%n%Creset'
@@ -46,3 +57,5 @@ email = me@asoli.dev
   defaultBranch = main
 [diff]
 	submodule = log
+[commit]
+	gpgsign = false
