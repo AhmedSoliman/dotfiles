@@ -1,7 +1,8 @@
 -- Setup neovim lua configuration
 require('neodev').setup()
 
-require('nvim-treesitter.configs').setup {
+require('nvim-treesitter').setup {
+  install_dir = vim.fn.stdpath('data') .. '/site',
   -- ensure_installed = { "c", "cpp", "rust", "python", "javascript", "typescript", "java", "json", "toml", "yaml", "html", "css", "vim", "lua" },
   auto_install = true,
   sync_install = false,

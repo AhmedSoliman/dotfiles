@@ -50,7 +50,7 @@ return {
 
   {
     'nvim-telescope/telescope.nvim',
-    tag = '0.1.8',
+    version = "*",
     dependencies = {
       { 'nvim-lua/plenary.nvim' },
       { 'nvim-telescope/telescope-fzf-native.nvim' },
@@ -96,19 +96,30 @@ return {
   -- Treesitter
   {
     'nvim-treesitter/nvim-treesitter',
-    -- build = ":TSUpdate",
-    build = function()
-      local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
-      ts_update()
-    end,
+    branch = "main",
+    build = ":TSUpdate",
+    -- init = function()
+    --   vim.api.nvim_create_autocmd('FileType', {
+    --     callback = function()
+    --       -- Enable treesitter highlighting and disable regex syntax
+    --       pcall(vim.treesitter.start)
+    --       -- Enable treesitter-based indentation
+    --       vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    --     end,
+    --   })
+    -- end,
+    -- build = function()
+    --   local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
+    --   ts_update()
+    -- end,
     dependencies = {
       -- Extended matchers for %
       'andymass/vim-matchup',
       -- Highlight parenthesis pairs w/ different colors
-      'p00f/nvim-ts-rainbow',
+      -- 'p00f/nvim-ts-rainbow',
       -- Auto close <html> tags
       'windwp/nvim-ts-autotag',
-      'nvim-treesitter/nvim-treesitter-textobjects',
+      { 'nvim-treesitter/nvim-treesitter-textobjects', branch = "main" },
     },
     -- config = function()
     --   local configs = require("nvim-treesitter.configs")
@@ -124,6 +135,7 @@ return {
   },
   {
     'nvim-treesitter/nvim-treesitter-context',
+    branch = "master",
     config = function()
       require("treesitter-context").setup {
         enable = true,        -- Enable this plugin (Can be enabled/disabled later via commands)
@@ -264,13 +276,13 @@ return {
   -- },
 
   -- LSP for formatting/diagnostics
-  {
-    'jose-elias-alvarez/null-ls.nvim',
-    dependencies = {
-      'lukas-reineke/lsp-format.nvim',
-      'nvim-lua/plenary.nvim',
-    },
-  },
+  -- {
+  --   'jose-elias-alvarez/null-ls.nvim',
+  --   dependencies = {
+  --     'lukas-reineke/lsp-format.nvim',
+  --     'nvim-lua/plenary.nvim',
+  --   },
+  -- },
 
   { 'onsails/lspkind.nvim' },
 
@@ -325,7 +337,7 @@ return {
   --  use 'simrat39/rust-tools.nvim'
   {
     'mrcjkb/rustaceanvim',
-    version = '^6',
+    version = '^9',
     init = function()
       vim.g.rustaceanvim = {
         -- Plugin configuration

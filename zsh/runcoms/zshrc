@@ -73,3 +73,5 @@ export CPPFLAGS="-I/opt/homebrew/opt/node@22/include"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # Custom zshrc if exists
 [ -f ~/.custom.zshrc ] && source ~/.custom.zshrc
+
+. "$HOME/.local/bin/env"
