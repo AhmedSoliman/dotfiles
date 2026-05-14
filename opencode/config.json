@@ -3,6 +3,7 @@
     "watcher": {
     "ignore": ["node_modules/**", "dist/**", ".git/**", ".sl/**", "target/**"]
   },
+  "lsp": true,
   "permission": {
     "lsp": "allow"
   },
