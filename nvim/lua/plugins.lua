@@ -361,6 +361,7 @@ return {
               },
               cargo = {
                 loadOutDirsFromCheck = true,
+                targetDir = true,
               },
               procMacro = {
                 enable = true,
