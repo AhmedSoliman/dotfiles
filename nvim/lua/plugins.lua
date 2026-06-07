@@ -326,12 +326,6 @@ return {
     -- Uncomment next line if you want to follow only stable versions
     -- tag = "*"
   },
-  {
-    'numToStr/Comment.nvim',
-    config = function()
-      require('Comment').setup()
-    end
-  },
 
   -- Rust tools
   --  use 'simrat39/rust-tools.nvim'
