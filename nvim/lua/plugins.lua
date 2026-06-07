@@ -14,11 +14,54 @@ return {
     'tinted-theming/tinted-vim'
   },
 
-  -- show changed line marks in gutter
-  { 'airblade/vim-gitgutter',     branch = "main" },
   -- Icons
   { 'nvim-tree/nvim-web-devicons' },
-  { 'echasnovski/mini.nvim',      version = false },
+  {
+    'echasnovski/mini.nvim',
+    version = false,
+    config = function()
+      -- show changed line marks in gutter (git + sapling)
+      local diff = require('mini.diff')
+
+      -- Custom mini.diff source for Sapling (sl): reference text is the
+      -- working copy parent's version of the file (`sl cat -r .`).
+      local function sapling_refresh(buf_id, path)
+        vim.system({ 'sl', 'cat', '-r', '.', path }, { text = true }, function(out)
+          if out.code ~= 0 then return end -- untracked file or sl error
+          vim.schedule(function()
+            if vim.api.nvim_buf_is_valid(buf_id) then
+              pcall(diff.set_ref_text, buf_id, out.stdout)
+            end
+          end)
+        end)
+      end
+
+      local sapling_source = {
+        name = 'sapling',
+        attach = function(buf_id)
+          local path = vim.api.nvim_buf_get_name(buf_id)
+          if path == '' or not vim.fs.root(path, '.sl') then return false end
+          sapling_refresh(buf_id, path)
+          -- Re-read reference text when coming back to nvim/the buffer, so
+          -- signs update after `sl commit`/`amend`/`goto` in another terminal
+          vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter', 'TermLeave' }, {
+            group = vim.api.nvim_create_augroup('SaplingDiff' .. buf_id, { clear = true }),
+            buffer = buf_id,
+            callback = function() sapling_refresh(buf_id, path) end,
+          })
+        end,
+        detach = function(buf_id)
+          pcall(vim.api.nvim_del_augroup_by_name, 'SaplingDiff' .. buf_id)
+        end,
+      }
+
+      diff.setup({
+        -- tried in order per buffer: git repos use the git source,
+        -- sapling repos fall through to the custom source
+        source = { diff.gen_source.git(), sapling_source },
+      })
+    end,
+  },
 
   -- File explorer
   {
