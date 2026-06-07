@@ -75,6 +75,11 @@ return {
     -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
     lazy = false,
   },
+  {
+    "JezerM/oil-lsp-diagnostics.nvim",
+    dependencies = { "stevearc/oil.nvim" },
+    opts = {}
+  },
   -- Status Line
   {
     'nvim-lualine/lualine.nvim',
