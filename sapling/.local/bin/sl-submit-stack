@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+function usage() {
+  cat <<'EOF'
+Usage: sl submit-stack [sl pr submit options]
+
+Submit the current Sapling stack, then register its pull requests as a native
+GitHub stack. Options are passed to `sl pr submit`; useful examples include
+`--draft`, `--message MESSAGE`, and `--open`.
+
+The current commit and its draft ancestors are submitted, matching
+`sl pr submit --stack`. Run this from the top commit to submit the whole stack.
+EOF
+}
+
+if [[ ${1:-} == "-h" || ${1:-} == "--help" ]]; then
+  usage
+  exit 0
+fi
+
+for command_name in sl gh; do
+  if ! command -v "$command_name" >/dev/null 2>&1; then
+    printf 'sl-submit-stack: required command not found: %s\n' "$command_name" >&2
+    exit 127
+  fi
+done
+
+if ! gh stack --version >/dev/null 2>&1; then
+  printf '%s\n' \
+    'sl-submit-stack: gh-stack is not installed; run:' \
+    '  gh extension install github/gh-stack' >&2
+  exit 1
+fi
+
+# Force the compatible topology even if a repository overrides the user config.
+# Sapling remains responsible for branches, commit-to-PR associations, titles,
+# descriptions, and draft state; gh-stack only adds GitHub's native stack link.
+sl \
+  --config github.pr-workflow=single \
+  --config github.pull-request-include-reviewstack=false \
+  pr submit --stack "$@"
+
+stack_rows="$({
+  sl log \
+    -r 'reverse(sort(draft() & ::., topo))' \
+    -T '{github_pull_request_repo_owner}\t{github_pull_request_repo_name}\t{github_pull_request_number}\n'
+} 2>/dev/null)"
+
+repo=""
+pr_numbers=()
+
+while IFS=$'\t' read -r owner name number; do
+  [[ -n $number ]] || continue
+
+  row_repo="$owner/$name"
+  if [[ -n $repo && $row_repo != "$repo" ]]; then
+    printf 'sl-submit-stack: stack contains PRs from more than one repository\n' >&2
+    exit 1
+  fi
+
+  repo="$row_repo"
+  pr_numbers+=("$number")
+done <<< "$stack_rows"
+
+if [[ -z $repo || ${#pr_numbers[@]} -eq 0 ]]; then
+  printf 'sl-submit-stack: Sapling submitted no PR-linked commits\n' >&2
+  exit 1
+fi
+
+if [[ ${#pr_numbers[@]} -eq 1 ]]; then
+  printf 'Submitted PR #%s; a native stack needs at least two PRs.\n' \
+    "${pr_numbers[0]}"
+  exit 0
+fi
+
+# Supplying the bottom PR's existing base also works in new repositories where
+# GitHub has not populated defaultBranchRef yet.
+base_branch="$(gh pr view "${pr_numbers[0]}" \
+  --repo "$repo" \
+  --json baseRefName \
+  --jq '.baseRefName')"
+
+if [[ -z $base_branch ]]; then
+  printf 'sl-submit-stack: could not determine the bottom PR base branch\n' >&2
+  exit 1
+fi
+
+GH_REPO="$repo" gh stack link \
+  --base "$base_branch" \
+  "${pr_numbers[@]}"
