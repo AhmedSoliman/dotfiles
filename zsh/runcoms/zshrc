@@ -79,3 +79,8 @@ fi
 [ -f ~/.custom.zshrc ] && source ~/.custom.zshrc
 
 . "$HOME/.local/bin/env"
+
+# direnv: load per-directory .envrc files (only if direnv is installed)
+if (( $+commands[direnv] )); then
+  eval "$(direnv hook zsh)"
+fi
