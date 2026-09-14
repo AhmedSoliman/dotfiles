@@ -1,5 +1,6 @@
 automake
 bat
+direnv
 dust
 eza
 fd
@@ -13,6 +14,7 @@ python
 ripgrep
 sapling
 socat
+starship
 tmux
 tree-sitter-cli
 universal-ctags

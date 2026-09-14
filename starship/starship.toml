@@ -1,0 +1,63 @@
+# Starship prompt. Only non-default options live here. Docs: https://starship.rs/config/
+"$schema" = 'https://starship.rs/config-schema.json'
+
+add_newline = false
+
+# Keep VCS info next to the directory; $all expands to every module not listed here.
+format = "$username$hostname$kubernetes$directory${custom.sapling}$all"
+
+# Sorin-style paths: parents shortened to one char, last dir full (~/w/r/restate).
+[directory]
+truncation_length = 1
+fish_style_pwd_dir_length = 1
+truncate_to_repo = false
+
+[direnv]
+disabled = false
+
+[status]
+disabled = false
+
+# Off by default. Shown only in k8s-ish directories or when KUBECONFIG is set.
+[kubernetes]
+disabled = false
+detect_files = ["Chart.yaml", "kustomization.yaml", "skaffold.yaml"]
+detect_folders = ["k8s", "kubernetes", "helm"]
+detect_env_vars = ["KUBECONFIG"]
+
+# gke_<project>_<region>_<cluster>  ->  <project>/<cluster>
+[[kubernetes.contexts]]
+context_pattern = 'gke_(?P<project>[\w-]+)_[\w-]+_(?P<cluster>[\w-]+)'
+context_alias = '$project/$cluster'
+
+# Sapling has no native module. Shows `<short hash> [bookmark] [!]`.
+# Hash comes from the first bytes of .sl/dirstate (p1), ~1ms vs ~10ms for `sl whereami`.
+# `sl status` is fast only via watchman; presetting WATCHMAN_SOCK skips the
+# `watchman get-sockname` spawn (~90ms -> ~30ms). If the socket is missing we
+# leave discovery to sl so it can start the daemon instead of crawling the tree.
+[custom.sapling]
+description = "Sapling: short hash, active bookmark, dirty marker"
+when = 'd=$PWD; while [ -n "$d" ]; do [ -d "$d/.sl" ] && exit 0; d=${d%/*}; done; exit 1'
+command = '''
+d=$PWD; while [ ! -d "$d/.sl" ]; do d=${d%/*}; [ -n "$d" ] || exit 1; done
+sock="${XDG_STATE_HOME:-$HOME/.local/state}/watchman/$USER-state/sock"
+[ -S "$sock" ] && export WATCHMAN_SOCK="$sock"
+hash=$(xxd -p -l 5 "$d/.sl/dirstate" 2>/dev/null)
+[ ${#hash} -eq 10 ] || hash=$(sl whereami 2>/dev/null | cut -c1-10)
+bm=; [ -f "$d/.sl/bookmarks.current" ] && read -r bm < "$d/.sl/bookmarks.current"
+dirty=$(sl status -mard 2>/dev/null)
+printf '%s%s%s' "$hash" "${bm:+ $bm}" "${dirty:+ !}"
+'''
+shell = ["sh"]
+format = "on [$output]($style) "
+style = "bold purple"
+
+# Noise
+[gcloud]
+disabled = true
+
+[buf]
+disabled = true
+
+[package]
+disabled = true
