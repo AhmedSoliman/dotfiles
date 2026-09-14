@@ -32,20 +32,27 @@ context_alias = '$project/$cluster'
 
 # Sapling has no native module. Shows `<short hash> [bookmark] [!]`.
 # Hash comes from the first bytes of .sl/dirstate (p1), ~1ms vs ~10ms for `sl whereami`.
-# `sl status` is fast only via watchman; presetting WATCHMAN_SOCK skips the
-# `watchman get-sockname` spawn (~90ms -> ~30ms). If the socket is missing we
-# leave discovery to sl so it can start the daemon instead of crawling the tree.
+# `sl status` is fast only via watchman. Presetting WATCHMAN_SOCK skips the
+# `watchman get-sockname` spawn (~90ms -> ~30ms), but only when the daemon behind
+# it is alive: a stale socket makes sl fall back to a 6s tree walk.
+# The status call is bounded to 250ms; during a watchman recrawl the dirty marker
+# is simply dropped instead of tripping starship's command_timeout warning.
 [custom.sapling]
 description = "Sapling: short hash, active bookmark, dirty marker"
 when = 'd=$PWD; while [ -n "$d" ]; do [ -d "$d/.sl" ] && exit 0; d=${d%/*}; done; exit 1'
 command = '''
 d=$PWD; while [ ! -d "$d/.sl" ]; do d=${d%/*}; [ -n "$d" ] || exit 1; done
-sock="${XDG_STATE_HOME:-$HOME/.local/state}/watchman/$USER-state/sock"
-[ -S "$sock" ] && export WATCHMAN_SOCK="$sock"
 hash=$(xxd -p -l 5 "$d/.sl/dirstate" 2>/dev/null)
 [ ${#hash} -eq 10 ] || hash=$(sl whereami 2>/dev/null | cut -c1-10)
 bm=; [ -f "$d/.sl/bookmarks.current" ] && read -r bm < "$d/.sl/bookmarks.current"
-dirty=$(sl status -mard 2>/dev/null)
+st="${XDG_STATE_HOME:-$HOME/.local/state}/watchman/$USER-state"
+wpid=; [ -S "$st/sock" ] && [ -f "$st/pid" ] && read -r wpid < "$st/pid"
+[ -n "$wpid" ] && kill -0 "$wpid" 2>/dev/null && export WATCHMAN_SOCK="$st/sock"
+out=${TMPDIR:-/tmp}/starship-sl.$$
+sl status -mard >"$out" 2>/dev/null & p=$!
+( sleep 0.25; kill $p 2>/dev/null ) >/dev/null 2>&1 &
+dirty=; wait $p 2>/dev/null && [ -s "$out" ] && dirty=1
+rm -f "$out"
 printf '%s%s%s' "$hash" "${bm:+ $bm}" "${dirty:+ !}"
 '''
 shell = ["sh"]
