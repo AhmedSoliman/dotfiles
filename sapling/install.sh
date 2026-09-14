@@ -11,7 +11,6 @@ conflicts=()
 
 for target in \
   .config/sapling/sapling.conf \
-  .config/sapling/ignore \
   .config/hunk/config.toml \
   Library/Preferences/sapling/sapling.conf \
   .local/bin/sl-submit-stack; do
