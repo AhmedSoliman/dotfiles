@@ -10,6 +10,9 @@ Submit the current Sapling stack, then register its pull requests as a native
 GitHub stack. Options are passed to `sl pr submit`; useful examples include
 `--draft`, `--message MESSAGE`, and `--open`.
 
+If any submitted PR already belongs to a GitHub stack, the missing PRs are
+appended to that stack instead of creating a new one.
+
 The current commit and its draft ancestors are submitted, matching
 `sl pr submit --stack`. Run this from the top commit to submit the whole stack.
 EOF
@@ -67,6 +70,26 @@ done <<< "$stack_rows"
 if [[ -z $repo || ${#pr_numbers[@]} -eq 0 ]]; then
   printf 'sl-submit-stack: Sapling submitted no PR-linked commits\n' >&2
   exit 1
+fi
+
+# A PR that already belongs to a GitHub stack means we are growing that stack,
+# not creating one. This is routine once the bottom PR merges: it leaves the
+# local draft stack but stays in the GitHub stack, and `gh stack link <prs...>`
+# refuses any update that would drop it. Add mode (`gh stack link <stack>
+# <prs...>`) appends only the missing PRs and skips those already present.
+# A 404 means stacks are disabled for the repository; fall through and let
+# `gh stack link` report it.
+stack_number=""
+for number in "${pr_numbers[@]}"; do
+  if found="$(gh api "repos/$repo/stacks?pull_request=$number" \
+    --jq 'first(.[] | select(.open)) | .number' 2>/dev/null)"; then
+    stack_number="$found"
+    [[ -n $stack_number ]] && break
+  fi
+done
+
+if [[ -n $stack_number ]]; then
+  exec env GH_REPO="$repo" gh stack link "$stack_number" "${pr_numbers[@]}"
 fi
 
 if [[ ${#pr_numbers[@]} -eq 1 ]]; then
