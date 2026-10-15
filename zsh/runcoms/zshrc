@@ -23,6 +23,9 @@ fi
 autoload -Uz compinit
 compinit
 
+# Patched tinted-shell hooks (upstream tmux/fzf hooks are broken); see
+# ~/.dotfiles/tinted-theming/hooks/README.md.
+export BASE16_SHELL_HOOKS_PATH="$HOME/.dotfiles/tinted-theming/hooks"
 source "$HOME/.config/base16-shell/base16-shell.plugin.zsh"
 
 # No lag after we hit esc
