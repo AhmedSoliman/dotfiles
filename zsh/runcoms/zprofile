@@ -42,6 +42,12 @@ typeset -gU cdpath fpath mailpath path
 # )
 [ -f ~/.asoli_custom.zprofile ] && source ~/.asoli_custom.zprofile
 
+# Homebrew on Linux, if installed. Set up before the list below so that list
+# stays in front of it; brew still comes before /usr/bin, like /opt/homebrew.
+if [[ -x /home/linuxbrew/.linuxbrew/bin/brew ]]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
+
 # Set the list of directories that Zsh searches for programs.
 path=(
   /opt/homebrew/opt/rustup/bin
