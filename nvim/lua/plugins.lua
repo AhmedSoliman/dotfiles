@@ -13,6 +13,11 @@ return {
   {
     'tinted-theming/tinted-vim'
   },
+  -- Markdown preview
+  {
+    "OXY2DEV/markview.nvim",
+    lazy = false,
+  },
 
   -- Icons
   { 'nvim-tree/nvim-web-devicons' },
