@@ -12,6 +12,10 @@ truncation_length = 1
 fish_style_pwd_dir_length = 1
 truncate_to_repo = false
 
+# Shown over SSH. Bright instead of the default dimmed green, to tell machines apart.
+[hostname]
+style = "bold yellow"
+
 [direnv]
 disabled = false
 
