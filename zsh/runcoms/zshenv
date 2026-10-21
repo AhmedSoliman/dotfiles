@@ -10,5 +10,14 @@ if [[ ( "$SHLVL" -eq 1 && ! -o LOGIN ) && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; t
   source "${ZDOTDIR:-$HOME}/.zprofile"
 fi
 
+# Open-files soft limit: macOS starts GUI apps (so terminals) at 256, Linux at
+# 1024. Big Sapling operations (rebase/restack of a long stack) run out with
+# "Too many open files". Raise it to 65536, capped at the hard limit; never lower.
+() {
+  local soft=$(ulimit -Sn) hard=$(ulimit -Hn) want=65536
+  [[ $hard != unlimited ]] && (( hard < want )) && want=$hard
+  [[ $soft != unlimited ]] && (( soft < want )) && ulimit -Sn $want
+} 2>/dev/null
+
 [ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
 . "$HOME/.cargo/env"
