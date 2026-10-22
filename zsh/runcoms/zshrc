@@ -60,6 +60,13 @@ unalias sl &> /dev/null
 
 if type starship &>/dev/null
 then
+  # Prompt hostname (starship's env_var.PROMPT_HOST) in the machine's tmux accent
+  # colour: ~/.tmux.host.conf (Ansible, host_vars host_color), else tmux-status.conf's
+  # default. Starship styles can't read variables, so the colour is baked in here.
+  host_color=31
+  [[ -r ~/.tmux.host.conf && "$(<~/.tmux.host.conf)" =~ '@host_color "colour([0-9]+)"' ]] && host_color=$match[1]
+  export PROMPT_HOST=$'\e[1;38;5;'${host_color}m${SSH_CONNECTION:+🌐 }${HOST%%.*}$'\e[0m'
+  unset host_color
   eval "$(starship init zsh)"
 fi
 
