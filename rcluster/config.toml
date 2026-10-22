@@ -1,0 +1,8 @@
+# rcluster user config, layered on top of the built-in defaults
+# (`rcluster defaults --builtin` prints them).
+
+# Checkout used to resolve `--image local` (`just --evaluate docker_image`).
+restate-repo = "~/workspace/restatedev/restate"
+
+[defaults.test-services]
+build = "~/workspace/restatedev/internal/load-gen/test-services"
